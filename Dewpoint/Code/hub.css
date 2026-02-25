@@ -1,0 +1,922 @@
+:root {
+    --bg-color: oklch(97.594% 0.00298 264.795);
+    --bd-color: 1px solid rgb(221, 221, 221);
+    --text-color: black;
+    --navigation-bg-color: oklch(93.1% 0.00011 271.152);
+    --btn-bg-color: oklch(85.69% 0.07011 243.537);
+    --btn-hover-bg-color: oklch(75.306% 0.06089 243.311);
+    --mini-analytic-bg-color: oklch(93.1% 0.00011 271.152);
+    --input-bg: oklch(93.1% 0.00011 271.152);
+    --toDoList-line-split-color: 1px solid rgb(221, 221, 221);
+    --input-bd-color: oklch(100% 0.00011 271.152);
+    --task-bg-color: oklch(97.594% 0.00298 264.795);
+    --task-hover-bg-color: oklch(93.1% 0.00011 271.152);
+    --current-date-text-color: oklch(75.306% 0.06089 243.311);
+    --add-btn-bg-color: oklch(85.69% 0.07011 243.537);
+    --add-btn-hover-bg-color: oklch(75.306% 0.06089 243.311);
+    --theme-btn-bg-color: oklch(21.808% 0.06129 260.262);
+    --theme-btn-hover-bg-color: oklch(21.808% 0.06129 260.262);
+    --add-task-btn-text-color: white;
+    --add-task-btn-bg-color: oklch(85.69% 0.07011 243.537);
+    --add-task-btn-hover-bg-color: oklch(75.306% 0.06089 243.311);
+    --add-task-btn-border: none;
+    --cancel-task-creation-btn-bg-color: oklch(93.1% 0.00011 271.152);
+    --cancel-task-creation-btn-hover-bg-color: oklch(83.127% 0.0022 14.838);
+    --enable-noti-btn-text-color: white;
+    --enable-noti-btn-bg-color: oklch(58.962% 0.20549 268.631);
+    --enable-noti-btn-border: none;
+    --enable-noti-btn-hover-bg-color: oklch(53.254% 0.18554 268.891);
+    --task-attribute-separator-color: black;
+    --task-options-btn-bg-color: oklch(93.1% 0.00011 271.152);
+    --task-options-btn-hover-bg-color: oklch(86.07% 0.0001 271.152);
+}
+
+[data-theme="dark"] {
+    --bg-color: oklch(11.779% 0.05035 260.832);
+    --bd-color: 1px solid rgb(54, 54, 54);
+    --text-color: white;
+    --navigation-bg-color: oklch(20% 0.05 260);
+    --btn-bg-color: oklch(74.813% 0.14896 230.353);
+    --btn-hover-bg-color: oklch(65.194% 0.12939 230.07);
+    --mini-analytic-bg-color: oklch(20% 0.05 260);
+    --input-bg: oklch(20% 0.05 260);
+    --toDoList-line-split-color: 1px solid rgb(54, 54, 54);
+    --input-bd-color: oklch(11.779% 0.05035 260.832);
+    --task-bg-color: oklch(11.779% 0.05035 260.832);
+    --task-hover-bg-color: oklch(26.741% 0.04452 281.116);
+    --current-date-text-color: oklch(65.194% 0.12939 230.07);
+    --add-btn-bg-color: oklch(74.813% 0.14896 230.353);
+    --add-btn-hover-bg-color: oklch(65.194% 0.12939 230.07);
+    --theme-btn-bg-color: oklch(93.1% 0.00011 271.152);
+    --theme-btn-hover-bg-color: oklch(77.311% 0.00009 271.152);
+    --add-task-btn-text-color: oklch(58.962% 0.20549 268.631);
+    --add-task-btn-bg-color: oklch(74.813% 0.14896 230.353);
+    --add-task-btn-hover-bg-color: oklch(65.194% 0.12939 230.07);
+    --add-task-btn-border: 1px solid oklch(58.962% 0.20549 268.631);
+    --cancel-task-creation-btn-bg-color: oklch(20% 0.05 260);
+    --cancel-task-creation-btn-hover-bg-color: oklch(27.167% 0.07952 260.626);
+    --enable-noti-btn-text-color: oklch(58.962% 0.20549 268.631);
+    --enable-noti-btn-bg-color: oklch(11.779% 0.05035 260.832);
+    --enable-noti-btn-hover-bg-color: oklch(26.842% 0.07891 269.442);
+    --enable-noti-btn-border: 1px solid oklch(58.962% 0.20549 268.631);
+    --task-attribute-separator-color: rgb(255, 255, 255);
+    --task-options-btn-bg-color: oklch(26.741% 0.04452 281.116);
+    --task-options-btn-hover-bg-color: oklch(36.324% 0.06848 281.337);
+}
+
+body {
+   font-family: "Roboto";
+   display: flex;
+   flex-direction: row;
+   width: 100%;
+   background-color: var(--bg-color);
+   color: var(--text-color);
+   align-items: left;
+}
+
+h1 {
+    font-weight: 400;
+}
+
+button {
+    font-family: "Roboto";
+    transition: all 0.1s;
+    background-color: var(--btn-bg-color);
+}
+
+button:hover {
+    cursor: pointer;
+    transform: scale(1.07);
+    background-color: var(--btn-hover-bg-color);
+}
+
+.askForNotifications {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+}
+
+.enableNotificationsBtn {
+    position: relative;
+    background-color: var(--enable-noti-btn-bg-color);
+    color: var(--enable-noti-btn-text-color);
+    margin: 5px;
+    width: 170px;
+    height: 36px;
+    padding: 8px 15px;
+    border: var(--enable-noti-btn-border);
+    border-radius: 20px;
+    margin-left: 15px;
+}
+
+.enableNotificationsBtn:hover {
+    background-color: var(--enable-noti-btn-hover-bg-color);
+    cursor: pointer;
+}
+
+.closeNotiPopup {
+    border-radius: 20px;
+    border: none;
+    text-align: center;
+    background-color: white;
+}
+
+.closeNotiPopup:hover {
+    transform: scale(1.2);
+}
+
+.notiReminder {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background-color: #D2D3D4;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    transform: translateY(100%);
+}
+
+.notiReminder.show {
+    animation: slideFromBottom 0.2s ease-out forwards;
+}
+
+@keyframes slideFromBottom {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.navigation {
+    padding: 15px;
+    border: none;
+    height: 1000px;
+    background-color: var(--navigation-bg-color);
+    margin-top: 44px;
+    border-radius: 40px;
+}
+
+.navigation button {
+    display: flex;
+    text-align: center;
+    padding: 10px;
+    background-color: var(--btn-bg-color);
+    border: none;
+    border-radius: 120px;
+    position: relative;
+}
+
+.navigation button:hover {
+    background-color: var(--btn-hover-bg-color);
+    cursor: pointer;
+}
+
+.navigation img {
+    width: 18px;
+}
+
+.homeBtn {
+    top: 10px;
+}
+
+.settingsBtn {
+    top: 10px;
+}
+
+.mainContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    gap: 15px;
+}
+
+.commandCenter {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    position: relative;
+    top: 10px;
+    left: 30px;
+    padding: 20px;
+    height: fit-content;
+    border: var(--bd-color);
+    border-radius: 20px;
+}
+
+.searchDiv {
+    position: relative;
+    width: 100%;
+}
+
+.searchBar {
+    width: 240px;
+    border: 1px solid var(--input-bd-color);
+    color: var(--text-color);
+    padding-left: 40px;
+}
+
+.searchBarIcon {
+    width: 18px;
+    position: absolute;
+    left: 20px;
+    top: 15px;
+}
+
+.daySummary {
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.currentDate {
+    font-size: 16px;
+    position: relative;
+    width: 300px;
+    font-weight: bold;
+    color: var(--current-date-text-color);
+}
+
+.greeting {
+    font-size: 26px;
+    position: relative;
+    width: 300px;
+    color: var(--text-color);
+    margin: 0;
+    margin-bottom: 17px;
+}
+
+.miniAnalytics {
+    display: flex;
+}
+
+.numberOfTasksDoneDiv {
+    background-color: var(--mini-analytic-bg-color);
+    padding: 10px 40px;
+    border-radius: 20px;
+}
+
+.mainWorkArea {
+    display: flex;
+    flex-direction: column;
+}
+
+.section1 {
+    display: flex;
+    flex-direction: row;
+}
+
+.section2 {
+    display: flex;
+    flex-direction: row;
+}
+
+.toDoList {
+    position: relative;
+    top: 30px;
+    left: 30px;
+    padding: 20px;
+    width: 700px;
+    height: fit-content;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 44px;
+    z-index: 1;
+    border: var(--bd-color);
+}
+
+.toDoListName {
+    position: relative;
+    bottom: 5px;
+}
+
+.options {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    bottom: 84px;
+    gap: 14px;
+}
+
+.listAndKanbanToggle {
+    position: relative;
+    top: 21px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    gap: 4px;
+    background-color: var(--btn-bg-color);
+    color: #00558a;
+    font-weight: 600;
+    border-radius: 20px;
+    border: none;
+    padding: 5px 10px;
+    height: 35px;
+}
+
+.KanbanBoardIcon {
+    width: 18px;
+    height: 18px;
+}
+
+.dropZones {
+    display: none;
+    justify-content: space-around;
+    position: relative;
+    width: 700px;
+    gap: 5px;
+}
+
+.toDoDropZone {
+    background-color: oklch(96.744% 0.00143 285.225);
+    min-height: 400px;
+    width: 30%;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid oklch(85.452% 0.0001 271.152);
+}
+
+.inProgressDropZone {
+    background-color: oklch(97.048% 0.01429 254.737);
+    min-height: 400px;
+    width: 30%;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid oklch(86.49% 0.01415 258.444);
+}
+
+.allDoneDropZone {
+    background-color: oklch(97.932% 0.02065 166.41);
+    min-height: 400px;
+    width: 30%;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid oklch(88.73% 0.01864 166.623);
+}
+
+.addBtn {
+    position: relative;
+    background-color: var(--btn-bg-color);
+    color: #00558a;
+    font-weight: 600;
+    margin-top: 5px;
+    width: 55px;
+    height: 35px;
+    border: none;
+    border-radius: 20px;
+    top: 17px;
+}
+
+.addBtn:hover {
+    background-color: var(--btn-hover-bg-color);
+    cursor: pointer;
+}
+
+.themeBtn {
+    position: relative;
+    background-color: var(--theme-btn-bg-color);
+    color: white;
+    width: 35px;
+    height: 35px;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 16px;
+}
+
+.themeBtn:hover {
+    background-color: var(--theme-btn-hover-bg-color);
+    cursor: pointer;
+}
+
+.sunIcon {
+    width: 20px;
+    height: 20px;
+    fill: black;
+}
+
+.moonIcon {
+    width: 20px;
+    height: 20px;
+}
+
+.toDoListLineSplit {
+    position: relative;
+    bottom: 60px;
+    background-color: var(--toDoList-line-split-color);
+    border: none;
+    height: 1px;
+}
+
+input {
+    margin: 5px;
+    padding: 10px 15px;
+    background-color: var(--input-bg);;
+    border-radius: 20px;
+    font-family: Arial, sans-serif;
+}
+
+input:focus {
+    outline: none;
+}
+
+.taskCreationDiv {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    bottom: 60px;
+    margin: 0px;
+    margin-bottom: 15px;
+    order: 0;
+    width: 100%;
+    gap: 10px;
+}
+
+.actualTaskCreation {
+    display: flex;
+    flex-direction: row;
+    width: 700px;
+}
+
+.taskInput {
+    width: 440px;
+    border: none;
+    color: var(--text-color);
+}
+
+.taskAttrCreation {
+    display: flex;
+    flex-direction: row;
+    width: 625px;
+    position: relative;
+    gap: 10px;
+    left: 5px;
+}
+
+.taskPrioritySelector {
+    background-color: var(--input-bg);
+    width: fit-content;
+    color: var(--text-color);
+    border: none;
+    padding: 1px 15px;
+    padding-right: 5px;
+    border-radius: 20px;
+    position: relative;
+    height: 36px;
+    left: 0px;
+}
+
+.taskDateInput {
+    width: 125px;
+    font-family: Arial, sans-serif;
+    position: relative;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    border: none;
+    color: var(--text-color);
+}
+
+.taskTimeInput {
+    position: relative;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    border: none;
+    color: var(--text-color);
+}
+
+.taskStatusSelector {
+    background-color: var(--input-bg);
+    width: fit-content;
+    color: var(--text-color);
+    border: none;
+    padding: 1px 15px;
+    padding-right: 5px;
+    border-radius: 20px;
+    position: relative;
+    height: 36px;
+    left: 0px;
+}
+
+.addAndCancelButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    position: relative;
+    left: 5px;
+}
+
+.addTaskBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background-color: var(--btn-bg-color);
+    color: #00558a;
+    font-weight: 600;
+    height: 36px;
+    width: 120px;
+    padding: 0 10px;
+    border: none;
+    border-radius: 20px;
+    position: relative;
+}
+
+.addTaskBtn:hover {
+    background-color: var(--btn-hover-bg-color);
+    cursor: pointer;
+}
+
+.addTaskBtnIcon {
+    width: 18px;
+}
+
+.cancelTaskCreationBtn {
+    background-color: var(--cancel-task-creation-btn-bg-color);
+    border: none;
+    border-radius: 20px;
+    padding: 0px 10px;
+    height: 36px;
+    width: 75px;
+    color: var(--text-color);
+}
+
+.cancelTaskCreationBtn:hover {
+    background-color: var(--cancel-task-creation-btn-hover-bg-color);
+}
+
+.noTasksYetAlert {
+    order: 1;
+}
+
+.noTasksYet {
+    position: relative;
+    left: 190px;
+    bottom: 50px;
+    font-family: Arial, sans-serif;
+    color: oklch(77.628% 0.00009 271.152);
+}
+
+.tinyTip {
+    font-size: 12px;
+    position: relative;
+    bottom: 65px;
+    left: 195px;
+    color: oklch(77.628% 0.00009 271.152);
+}
+
+ul {
+    position: relative;
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    vertical-align: middle;
+    margin: 0px;
+}
+
+li, .listItem {
+    margin-left: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    color: var(--text-color);
+    font-size: 20px;
+}
+
+.taskTextAndCheckbox {
+    display: flex;
+    flex-direction: row;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    width: 30px;
+    height: 33px;
+    border: 2px solid gray;
+    border-radius: 20px;
+    position: relative;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+input[type="checkbox"]:hover {
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+    background-color: oklch(62.797% 0.11316 167.052);
+    border-color: oklch(62.797% 0.11316 167.052);
+}
+
+input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 8px;
+    width: 10px;
+    height: 18px;
+    border: solid white;
+    border-width: 0 4px 4px 0;
+    transform: rotate(45deg) scale(1);
+    opacity: 0;
+}
+
+input[type="checkbox"]:checked::before {
+    opacity: 1;
+    animation: checkmark 0.3s ease forwards;
+}
+
+@keyframes checkmark {
+    0% {
+        transform: rotate(45deg) scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(45deg) scale(1);
+        opacity: 1;
+    }
+}
+
+.mainTask {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: flex-start;
+    gap: 10px;
+    border: none;
+    border-radius: 20px;
+    padding: 15px;
+    background-color: var(--task-bg-color);
+    backdrop-filter: blur(5px);
+    color: var(--text-color);
+}
+
+.mainTask:hover {
+    background-color: var(--task-hover-bg-color);
+}
+
+.mainTask.dragging {
+    opacity: 0.5;
+    border: 2px dashed #ccc;
+}
+
+.taskTextSpan {
+    position: relative;
+    text-align: left;
+    padding: 10px 15px;
+    padding-right: 35px;
+}
+
+.taskTextSpan:hover {
+    cursor: text;
+}
+
+.taskAttributes {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    font-size: 15px;
+}
+
+.taskPrioritySpan {
+    position: relative;
+    border-right: 1px solid var(--task-attribute-separator-color);
+    padding-right: 10px;
+}
+
+.taskDateAndTime {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    gap: 6px;
+}
+
+.taskDateAndTimeSpan {
+    position: relative;
+    order: 2;
+    border-right: 1px solid var(--task-attribute-separator-color);
+    padding-right: 10px;
+}
+
+.taskDateImg {
+    width: 18px;
+    order: 1;
+}
+
+.taskStatusSpan {
+    order: 3;
+}
+
+.taskOptionsBtn {
+    display: flex;
+    text-align: center;
+    padding: 10px;
+    background-color: var(--task-options-btn-bg-color);
+    border: none;
+    border-radius: 120px;
+    position: relative;
+}
+
+.taskOptionsBtn:hover {
+    background-color: var(--task-options-btn-hover-bg-color);
+    cursor: pointer;
+}
+
+.taskOptionsBtnIcon {
+    width: 18px;
+}
+
+.focusTimer {
+    position: relative;
+    top: 30px;
+    left: 30px;
+    padding: 20px;
+    width: 300px;
+    height: fit-content;
+    border: var(--bd-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    align-items: center;
+    background: linear-gradient(45deg, oklch(85.69% 0.07011 243.537), oklch(74.813% 0.14896 230.353), oklch(60.894% 0.18508 255.388));
+}
+
+.focusTimerName {
+    color: white;
+}
+
+.timerProgressRing {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 5;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear;
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
+
+.timerMinutesDiv {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    margin-bottom: 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.timerMinutesDiv svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.timerMinutes {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    z-index: 2;
+    margin: 0;
+}
+
+.track {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.2);
+    stroke-width: 5;
+}
+
+.timerButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.timerLengthOptions {
+    display: flex;
+    gap: 10px;
+}
+
+.timerLengthOptions button {
+    display: flex;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    position: relative;
+    font-weight: 1000;
+    height: 35px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur();
+    color: oklch(44.316% 0.11415 246.272);
+}
+
+.timerControls {
+    display: flex;
+    gap: 10px;
+}
+
+.startTimerBtn {
+    display: flex;
+    padding: 10px;
+    border: none;
+    border-radius: 120px;
+    position: relative;
+    height: 39px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur();
+}
+
+.startTimerBtnIcon {
+    width: 18px;
+}
+
+.pauseTimerBtn {
+    display: flex;
+    padding: 10px;
+    border: none;
+    border-radius: 120px;
+    position: relative;
+    height: 39px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur();
+}
+
+.pauseTimerBtnIcon {
+    width: 18px;
+}
+
+.restartTimerBtn {
+    display: flex;
+    padding: 10px;
+    border: none;
+    border-radius: 120px;
+    position: relative;
+    height: 39px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur();
+}
+
+.restartTimerBtnIcon {
+    width: 18px;
+}
+
+.calendar {
+    position: relative;
+    top: 5px;
+    left: 30px;
+    padding: 20px;
+    width: 700px;
+    height: 500px;
+    border-radius: 20px;
+    margin-top: 44px;
+    border: var(--bd-color);
+}
+
+#calendar {
+    width: 700px;
+    height: 394px;
+}
+
+.fc .fc-toolbar-title {
+    font-weight: 400;
+}
+
+.fc .fc-daygrid-day-number {
+    text-align: left; 
+    flex-grow: 1; 
+}

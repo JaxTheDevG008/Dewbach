@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js'></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dewpoint</title>
+    <link rel="stylesheet" href="hub.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  </head>
+<body>
+
+  <!-- Notification Banner -->
+  <div class="askForNotifications">
+    <p class="enableNotiMessage">
+      Enable desktop notifications for the best task experience! (optional)
+    </p>
+    <button class="enableNotificationsBtn">
+      Enable Notifications
+    </button>
+    <button class="closeNotiPopup">
+      ✕
+    </button>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navigation">
+    <button class="homeBtn">
+      <img src="../Images/Home Icon.png" class="homeIcon">
+    </button>
+    <button class="settingsBtn">
+      <img src="../Images/Settings Icon.png" class="settingsIcon">
+    </button>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="mainContent">
+
+    <div class="header">
+      <div class="commandCenter">
+        <div class="daySummary">
+          <p class="currentDate"></p>
+          <h1 class="greeting"></h1>
+        </div>
+
+        <div class="searchDiv">
+          <img src="../Images/Search Icon.png" class="searchBarIcon">
+          <input class="searchBar">
+        </div>
+
+        <button class="themeBtn">
+          🌙
+        </button>
+      </div>
+
+      <div class="miniAnalytics">
+        <div class="numberOfTasksDoneDiv">
+          <p class="tasksDoneHeader">Tasks Done</p>
+          <span class="numberOfTasksDone">1</span>
+          <p class="numberOfUndoneTasks">of 3 total</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Work Area -->
+    <div class="mainWorkArea">
+
+      <div class="section1">
+        <!-- To-Do List -->
+        <section class="toDoList">
+          <div>
+            <h1 class="toDoListName">Tasks</h1>
+            <div class="options">
+              <button class="listAndKanbanToggle">
+                <img src="../Images/Kanban Board Icon.png" class="KanbanBoardIcon">
+                Kanban
+              </button>
+              <button class="addBtn">
+                Add
+              </button>
+            </div>
+            <hr class="toDoListLineSplit">
+            <div class="taskCreationDiv">
+              <div class="actualTaskCreation">
+                <input class="taskInput" type="text" placeholder="What needs to be done?">
+              </div>
+
+              <div class="taskAttrCreation">
+                <select class="taskPrioritySelector">
+                  <option value="" disabled selected>No Priority</option>
+                  <option class="noPriorityOption" value="None">None</option>
+                  <option class="lowPriorityOption" value="Low">Low</option>
+                  <option class="mediumPriorityOption" value="Medium">Medium</option>
+                  <option class="highPriorityOption" value="High">High</option>
+                </select>
+                <input class="taskDateInput" type="date">
+                <input class="taskTimeInput" type="time">
+                <select class="taskStatusSelector">
+                  <option class="toDoStatus" value="To Do">To Do</option>
+                  <option class="inProgressStatus" value="In Progress">In Progress</option>
+                  <option class="blockedStatus" value="Blocked">Blocked</option>
+                  <option class="doneStatus" value="Done">Done</option>
+                </select>
+              </div>
+
+              <div class="addAndCancelButtons">
+                <button class="cancelTaskCreationBtn">Cancel</button>
+                <button type="button" class="addTaskBtn"><img class="addTaskBtnIcon" src="../Images/Add Task Icon.png" alt="Add Task Icon">Add Task</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="noTasksYetAlert">
+            <h2 class="noTasksYet">No tasks yet!</h2>
+            <p class="tinyTip">Add a task to get started.</p>
+          </div>
+
+          <ul class="taskList">
+            <!-- Tasks will dynamically show up here -->
+          </ul>
+
+          <div class="dropZones">
+            <div class="toDoDropZone">
+              To Do
+            </div>
+            <div class="inProgressDropZone">
+              In Progress
+            </div>
+            <div class="allDoneDropZone">
+              Completed
+            </div>
+          </div>
+        </section>
+
+        <!-- Focus Timer -->
+        <section class="focusTimer">
+          <h1 class="focusTimerName">Focus Timer</h1>
+
+          <div class="timerMinutesDiv">
+            <svg viewBox="0 0 100 100">
+              <circle class="track" cx="50" cy="50" r="45"/>
+              <circle class="timerProgressRing" cx="50" cy="50" r="45"/>
+            </svg>
+            <span class="timerMinutes"></span>
+          </div>
+
+          <div class="timerButtons">
+            <div class="timerLengthOptions flex gap-2">
+              <button class="px-4 py-2 rounded-full bg-blue-500 font-semibold">15m</button>
+              <button class="px-4 py-2 rounded-full bg-blue-500 font-semibold">25m</button>
+              <button class="px-4 py-2 rounded-full bg-blue-500 font-semibold">45m</button>
+              <button class="px-4 py-2 rounded-full bg-blue-500 font-semibold">60m</button>
+            </div>
+
+            <div class="timerControls">
+              <button class="startTimerBtn">
+                <img src="../Images/Start Timer Icon.png" class="startTimerBtnIcon w-4">
+              </button>
+              <button class="pauseTimerBtn">
+                <img src="../Images/Pause Timer Icon.png" class="pauseTimerBtnIcon w-4">
+              </button>
+              <button class="restartTimerBtn">
+                <img src="../Images/Restart Timer Icon.png" class="restartTimerBtnIcon w-4">
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="section2">
+        <section class="calendar">
+          <div id="calendar"></div>
+        </section>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="hub.js" defer></script>
+</body>
+</html>
