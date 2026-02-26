@@ -46,8 +46,13 @@ let calendar;
 
 document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
-  calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth'
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    headerToolbar: {
+      left: "",
+      center: "prev,title,next",
+      right: ""
+    }
   });
   calendar.render();
 });
@@ -210,151 +215,183 @@ cancelTaskCreationBtn.addEventListener("click", () => {
 })
 
 addTaskBtn.addEventListener("click", () => {
-    noTasksYetAlert.style.display = "none";
+  noTasksYetAlert.style.display = "none";
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.className = "checkbox";
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.className = "checkbox";
 
-    const taskText = taskInput.value.trim();
+  const taskText = taskInput.value.trim();
 
-    const taskPriority = taskPrioritySelector.value;
+  const taskPriority = taskPrioritySelector.value;
 
-    const taskDate = taskDateInput.value;
+  const taskDate = taskDateInput.value;
 
-    let formattedDate = "";
+  let formattedDate = "";
 
+  if (taskDate) {
+    const dateObject = new Date(taskDate + "T00:00:00");
+    formattedDate = dateObject.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric"
+    });
+  }
+
+  const taskTime = taskTimeInput.value;
+
+  const taskStatus = taskStatusSelector.value;
+
+  const taskOptionsBtn = document.createElement("button");
+  taskOptionsBtn.className = "taskOptionsBtn"
+  taskOptionsBtn.innerHTML = `<img class="taskOptionsBtnIcon" src="../Images/Task Options Icon.png" alt="Task Options Icon">`
+  taskOptionsBtn.style.display = "none";
+
+  const taskPriorityValue = taskPrioritySelector.value;
+
+  let eventColor = newTheme === "dark" ? "#06bdf9" : "#a9d6fb"; 
+
+  if (taskPriorityValue === "Low") {
+      eventColor = "#90ee90";
+  } else if (taskPriorityValue === "Medium") {
+      eventColor = "#ffcc00";
+  } else if (taskPriorityValue === "High") {
+      eventColor = "#ff6b6b";
+  } else {
+      eventColor = newTheme === "dark" ? "#06bdf9" : "#a9d6fb";
+  }
+
+  if (taskText !== "") {
+    const listItem = document.createElement("li");
+    listItem.className = "listItem";
+    listItem.dataset.dateNotified = "false";
+    listItem.dataset.timeNotified = "false";
+    listItem.dataset.dueDate = taskDate;
+    listItem.dataset.dueTime = taskTime;
+
+    const mainTask = document.createElement("label");
+    mainTask.className = "mainTask";
+    mainTask.draggable = isDraggable;
+
+    const taskTextAndCheckbox = document.createElement("div");
+    taskTextAndCheckbox.className = "taskTextAndCheckbox";
+
+    const taskTextSpan = document.createElement("span");
+    taskTextSpan.className = "taskTextSpan";
+    taskTextSpan.textContent = taskText;
+
+    const taskAttributes = document.createElement("div");
+    taskAttributes.className = "taskAttributes";
+
+    const taskPrioritySpan = document.createElement("span");
+    taskPrioritySpan.className = "taskPrioritySpan";
+    taskPrioritySpan.textContent = taskPriority;
+
+    const taskDateAndTime = document.createElement("div");
+    taskDateAndTime.className = "taskDateAndTime";
+
+    const taskDateAndTimeSpan = document.createElement("span");
+    taskDateAndTimeSpan.className = "taskDateAndTimeSpan";
+
+    const taskDateImg = document.createElement("img");
+    taskDateImg.className = "taskDateImg";
+    taskDateImg.src = "../Images/Date Icon.png";
+    taskDateImg.alt = "Date Icon";
+
+    taskDateAndTimeSpan.textContent =
+      (formattedDate ? "Due " + formattedDate : "") + (taskTime ? " at " + taskTime : "");
+
+    const taskStatusSpan = document.createElement("span");
+    taskStatusSpan.className = "taskStatusSpan";
+    taskStatusSpan.textContent = taskStatus;
+
+    taskTextAndCheckbox.prepend(checkbox);
+    checkbox.addEventListener("change", (e) => {
+      updateTasksDoneCount();
+      e.stopPropagation();
+      if (document.documentElement.getAttribute("data-theme") === "dark") {
+        taskTextSpan.style.color = checkbox.checked ? "gray" : "white";
+      } else {
+        taskTextSpan.style.color = checkbox.checked ? "gray" : "black";
+      }
+    });
+    taskTextAndCheckbox.appendChild(taskTextSpan);
+    mainTask.appendChild(taskTextAndCheckbox);
+    taskAttributes.appendChild(taskPrioritySpan);
+    taskDateAndTime.appendChild(taskDateImg);
+    taskDateAndTime.appendChild(taskDateAndTimeSpan);
+    if(taskDate || taskTime) {
+      taskAttributes.appendChild(taskDateAndTime);
+    }
+    taskAttributes.appendChild(taskStatusSpan);
+    mainTask.appendChild(taskAttributes);
+    mainTask.appendChild(taskOptionsBtn);
+    listItem.appendChild(mainTask);
     if (taskDate) {
-      const dateObject = new Date(taskDate + "T00:00:00");
-      formattedDate = dateObject.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric"
-      });
-    }
-
-    const taskTime = taskTimeInput.value;
-
-    const taskStatus = taskStatusSelector.value;
-
-    const taskOptionsBtn = document.createElement("button");
-    taskOptionsBtn.className = "taskOptionsBtn"
-    taskOptionsBtn.innerHTML = `<img class="taskOptionsBtnIcon" src="../Images/Task Options Icon.png" alt="Task Options Icon">`
-    taskOptionsBtn.style.display = "none";
-
-    const taskPriorityValue = taskPrioritySelector.value;
-
-    let eventColor = newTheme === "dark" ? "#06bdf9" : "#a9d6fb"; 
-
-    if (taskPriorityValue === "Low") {
-        eventColor = "#90ee90";
-    } else if (taskPriorityValue === "Medium") {
-        eventColor = "#ffcc00";
-    } else if (taskPriorityValue === "High") {
-        eventColor = "#ff6b6b";
-    } else {
-        eventColor = newTheme === "dark" ? "#06bdf9" : "#a9d6fb";
-    }
-
-    if (taskText !== "") {
-      const listItem = document.createElement("li");
-      listItem.className = "listItem";
-      listItem.dataset.dateNotified = "false";
-      listItem.dataset.timeNotified = "false";
-      listItem.dataset.dueDate = taskDate;
-      listItem.dataset.dueTime = taskTime;
-
-      const mainTask = document.createElement("div");
-      mainTask.className = "mainTask";
-      mainTask.draggable = isDraggable;
-
-      const taskTextAndCheckbox = document.createElement("div");
-      taskTextAndCheckbox.className = "taskTextAndCheckbox";
-  
-      const taskTextSpan = document.createElement("span");
-      taskTextSpan.className = "taskTextSpan";
-      taskTextSpan.textContent = taskText;
-
-      const taskAttributes = document.createElement("div");
-      taskAttributes.className = "taskAttributes";
-
-      const taskPrioritySpan = document.createElement("span");
-      taskPrioritySpan.className = "taskPrioritySpan";
-      taskPrioritySpan.textContent = taskPriority;
-
-      const taskDateAndTime = document.createElement("div");
-      taskDateAndTime.className = "taskDateAndTime";
-
-      const taskDateAndTimeSpan = document.createElement("span");
-      taskDateAndTimeSpan.className = "taskDateAndTimeSpan";
-
-      const taskDateImg = document.createElement("img");
-      taskDateImg.className = "taskDateImg";
-      taskDateImg.src = "../Images/Date Icon.png";
-      taskDateImg.alt = "Date Icon";
-
-      taskDateAndTimeSpan.textContent =
-        (formattedDate ? "Due " + formattedDate : "") + (taskTime ? " at " + taskTime : "");
-
-      const taskStatusSpan = document.createElement("span");
-      taskStatusSpan.className = "taskStatusSpan";
-      taskStatusSpan.textContent = taskStatus;
-
-      taskTextAndCheckbox.prepend(checkbox);
-      checkbox.addEventListener("change", () => {
-        if (document.documentElement.getAttribute("data-theme") === "dark") {
-          taskTextSpan.style.color = checkbox.checked ? "gray" : "white";
-        } else {
-          taskTextSpan.style.color = checkbox.checked ? "gray" : "black";
+      const startDateTime = taskTime ? `${taskDate}T${taskTime}` : taskDate;
+      calendar.addEvent({
+        title: taskText,
+        start: startDateTime,
+        allDay: !taskTime,
+        backgroundColor: eventColor,
+        extendedProps: {
+          priority: taskPrioritySelector.value,
+          status: taskStatusSelector.value
         }
-      });
-      taskTextAndCheckbox.appendChild(taskTextSpan);
-      mainTask.appendChild(taskTextAndCheckbox);
-      taskAttributes.appendChild(taskPrioritySpan);
-      taskDateAndTime.appendChild(taskDateImg);
-      taskDateAndTime.appendChild(taskDateAndTimeSpan);
-      if(taskDate || taskTime) {
-        taskAttributes.appendChild(taskDateAndTime);
-      }
-      taskAttributes.appendChild(taskStatusSpan);
-      mainTask.appendChild(taskAttributes);
-      mainTask.appendChild(taskOptionsBtn);
-      listItem.appendChild(mainTask);
-      if (taskDate) {
-        const startDateTime = taskTime ? `${taskDate}T${taskTime}` : taskDate;
-        calendar.addEvent({
-          title: taskText,
-          start: startDateTime,
-          allDay: !taskTime,
-          backgroundColor: eventColor,
-          extendedProps: {
-            priority: taskPrioritySelector.value,
-            status: taskStatusSelector.value
-          }
-        })
-      }
-      mainTask.addEventListener("mouseenter", () => {
-        taskOptionsBtn.style.display = "inline";
       })
-      mainTask.addEventListener("mouseleave", () => {
-        taskOptionsBtn.style.display = "none";
-      })
-      mainTask.addEventListener("click", () => {
-        checkbox.checked = !checkbox.checked;
-      })
-      taskList.appendChild(listItem);
-      taskInput.value = "";
-      taskDateInput.value = "";
-      taskTimeInput.value = "";
-    } else {
     }
-    taskCreationDiv.style.display = "none";
-  });
+    mainTask.addEventListener("mouseenter", () => {
+      taskOptionsBtn.style.display = "inline";
+    })
+    mainTask.addEventListener("mouseleave", () => {
+      taskOptionsBtn.style.display = "none";
+    })
+    mainTask.addEventListener("click", () => {
+      updateTasksDoneCount();
+      if (e.target === checkbox) return;
+
+      checkbox.checked = !checkbox.checked;
+      checkbox.dispatchEvent(new Event("change"));
+    })
+    taskList.appendChild(listItem);
+    updateTasksDoneCount();
+    taskInput.value = "";
+    taskDateInput.value = "";
+    taskTimeInput.value = "";
+  } else {
+  }
+  taskCreationDiv.style.display = "none";
+});
 
 function showNoTasksYet() {
   if (taskList.childElementCount === 0) {
     noTasksYetAlert.style.display = "inline";
   } else {
     noTasksYetAlert.style.display = "none";
+  }
+}
+
+function updateTasksDoneCount() {
+  const totalTasks = taskList.querySelectorAll(".checkbox").length;
+  const doneTasks = taskList.querySelectorAll(".checkbox:checked").length;
+  const tasksLeft = totalTasks - doneTasks;
+
+  const doneDisplay = document.querySelector(".numberOfTasksDone");
+  if (doneDisplay) {
+    doneDisplay.textContent = doneTasks;
+  } else {
+    doneDisplay.textContent = "0";
+  }
+
+  const tasksLeftDisplay = document.querySelector(".numberOfTasksLeft");
+  if (tasksLeftDisplay) {
+    tasksLeftDisplay.textContent = tasksLeft;
+  } else {
+    tasksLeftDisplay.textContent = "0";
+  }
+
+  const totalTasksDisplay = document.querySelector(".numberOfTasksTotal")
+  if (totalTasksDisplay) {
+    totalTasksDisplay.textContent = `of ${totalTasks} total`;
   }
 }
 
@@ -470,3 +507,24 @@ pauseTimerBtn.addEventListener("click", pauseTimer);
 restartTimerBtn.addEventListener("click", restartTimer);
 
 updateTimerDisplay();
+
+function getTaskData() {
+  const tasks = [];
+  document.querySelectorAll(".listItem").forEach(item => {
+    const checkbox = item.querySelector(".checkbox");
+    const text = item.querySelector(".taskTextSpan").textContent;
+    const priority = item.querySelector(".taskPrioritySpan").textContent;
+    const dueDate = item.dataset.dueDate;
+    const dueTime = item.dataset.dueTime;
+    const status = item.querySelector(".taskStatusSpan").textContent;
+
+    tasks.push({ text, priority, dueDate, dueTime, status, completed: checkbox.checked });
+  });
+  return tasks;
+}
+
+async function handleAssistant(mode) {
+  const taskData = JSON.stringify(getTaskData());
+  const insight = await generateDewpointInsight(mode, taskData);
+  alert(insight);
+}

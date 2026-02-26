@@ -29,6 +29,10 @@
     --task-attribute-separator-color: black;
     --task-options-btn-bg-color: oklch(93.1% 0.00011 271.152);
     --task-options-btn-hover-bg-color: oklch(86.07% 0.0001 271.152);
+    --focus-timer-bg-color: linear-gradient(45deg, oklch(85.69% 0.07011 243.537), oklch(74.813% 0.14896 230.353), oklch(60.894% 0.18508 255.388));
+    --fc-buttons-bg-color: oklch(100% 0.00011 271.152 / 0.3);
+    --fc-buttons-icon-color: black;
+    --fc-border-color: oklch(100% 0.00011 271.152);
 }
 
 [data-theme="dark"] {
@@ -62,6 +66,10 @@
     --task-attribute-separator-color: rgb(255, 255, 255);
     --task-options-btn-bg-color: oklch(26.741% 0.04452 281.116);
     --task-options-btn-hover-bg-color: oklch(36.324% 0.06848 281.337);
+    --focus-timer-bg-color: linear-gradient(45deg, oklch(71.579% 0.14246 230.537), oklch(54.021% 0.10882 230.936), oklch(26.741% 0.04452 281.116));
+    --fc-buttons-bg-color: oklch(11.779% 0.05035 260.832);
+    --fc-buttons-icon-color: white;
+    --fc-border-color: oklch(11.779% 0.05035 260.832);
 }
 
 body {
@@ -262,14 +270,70 @@ button:hover {
     margin-bottom: 17px;
 }
 
-.miniAnalytics {
+.AIAssistantBtn {
     display: flex;
+    text-align: center;
+    padding: 10px;
+    background-color: var(--btn-bg-color);
+    border: none;
+    border-radius: 120px;
+    position: relative;
 }
 
-.numberOfTasksDoneDiv {
+.AIAssistantBtn:hover {
+    background-color: var(--btn-hover-bg-color);
+    cursor: pointer;
+}
+
+.AIAssistantIcon {
+    width: 16px;
+}
+
+.miniAnalytics {
+    display: flex;
+    position: relative;
+    gap: 10px;
+    margin: 10px;
+    left: 30px;
+}
+
+.miniAnalytics div {
     background-color: var(--mini-analytic-bg-color);
     padding: 10px 40px;
     border-radius: 20px;
+    position: relative;
+    width: 75px;
+    height: 122.5px;
+}
+
+.tasksDoneHeader, .tasksLeftHeader, .sessionsLeftHeader {
+    font-size: 19px;
+    color: gray;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 20px;
+}
+
+.numberOfTasksDone, .numberOfTasksLeft, .numberOfSessionsDone {
+    font-size: 35px;
+    color: var(--text-color);
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+}
+
+.numberOfTasksTotal, .tasksLeftFooter, .sessionsFooter {
+    font-size: 16px;
+    color: var(--text-color);
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 20px;
 }
 
 .mainWorkArea {
@@ -767,7 +831,7 @@ input[type="checkbox"]:checked::before {
     flex-direction: column;
     margin-left: 20px;
     align-items: center;
-    background: linear-gradient(45deg, oklch(85.69% 0.07011 243.537), oklch(74.813% 0.14896 230.353), oklch(60.894% 0.18508 255.388));
+    background: var(--focus-timer-bg-color);
 }
 
 .focusTimerName {
@@ -928,8 +992,47 @@ input[type="checkbox"]:checked::before {
     height: 394px;
 }
 
+.fc .fc-toolbar {
+    display: flex !important;
+    justify-content: flex-end;
+}
+
+.fc .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) {
+    display: flex !important;
+    align-items: center;
+    gap: 20px;
+}
+
 .fc .fc-toolbar-title {
     font-weight: 400;
+    position: relative;
+    top: 3px;
+    font-size: 1.2rem;
+    display: inline-block !important;
+    margin-left: 0 !important;
+}
+
+.fc .fc-today-button {
+    display: none;
+}
+
+.fc .fc-prev-button, .fc .fc-next-button {
+    background-color: var(--fc-buttons-bg-color);
+    border: none;
+    border-radius: 20px;
+    color: var(--fc-buttons-icon-color);
+    padding: 5px 10px;
+    backdrop-filter: blur();
+}
+
+.fc .fc-prev-button:hover, .fc .fc-next-button:hover {
+    background-color: var(--fc-buttons-bg-color);
+    cursor: pointer;
+    color: var(--fc-buttons-icon-color);
+}
+
+.fc {
+  --fc-border-color: rgba(128, 128, 128, 0.4) !important;
 }
 
 .fc .fc-daygrid-day-number {
