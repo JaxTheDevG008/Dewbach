@@ -1,0 +1,13 @@
+[build]
+Netlify
+ to enter the frontend folder first
+  base = "Code/frontend"
+
+  command = "npm run build"
+
+  publish = "."
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
