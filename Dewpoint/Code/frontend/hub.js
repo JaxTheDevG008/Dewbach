@@ -46,7 +46,7 @@ let calendar;
 
 document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
-  var calendar = new FullCalendar.Calendar(calendarEl, {
+  calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     headerToolbar: {
       left: "",
@@ -67,6 +67,26 @@ function responsiveWebsite() {
 }
 
 responsiveWebsite();
+
+window.addEventListener("load", () => {
+  const savedTasks = localStorage.getItem("tasks");
+  if (savedTasks) {
+    taskList.innerHTML = savedTasks;
+    // Reattach hover listeners for taskOptionsBtn
+    document.querySelectorAll(".listItem").forEach((listItem) => {
+      const mainTask = listItem.querySelector(".mainTask");
+      const taskOptionsBtn = mainTask.querySelector(".taskOptionsBtn");
+      mainTask.addEventListener("mouseenter", () => {
+        taskOptionsBtn.style.display = "inline";
+      });
+      mainTask.addEventListener("mouseleave", () => {
+        taskOptionsBtn.style.display = "none";
+      });
+    });
+    updateTasksDoneCount();
+    noTasksYetAlert.style.display = "none";
+  }
+})
 
 const now = new Date();
 const formattedCurrentDate = now.toLocaleDateString('en-US', { dateStyle: 'full' });
@@ -241,10 +261,31 @@ addTaskBtn.addEventListener("click", () => {
 
   const taskStatus = taskStatusSelector.value;
 
+  const taskOptionsBtnDiv = document.createElement("div");
+  taskOptionsBtnDiv.className = "taskOptionsBtnDiv";
+
   const taskOptionsBtn = document.createElement("button");
   taskOptionsBtn.className = "taskOptionsBtn"
-  taskOptionsBtn.innerHTML = `<img class="taskOptionsBtnIcon" src="../Images/Task Options Icon.png" alt="Task Options Icon">`
+  taskOptionsBtn.innerHTML = `<img class="taskOptionsBtnIcon" src="../../Images/Task Options Icon.png" alt="Task Options Icon">`
   taskOptionsBtn.style.display = "none";
+
+  const taskOptions = document.createElement("div");
+  taskOptions.className = "taskOptions";
+  taskOptions.style.display = "none";
+  taskOptions.style.zIndex = "9999";
+
+  const editOption = document.createElement("div");
+  editOption.className = "taskOption";
+  editOption.textContent = "Edit";
+
+  const deleteOption = document.createElement("div");
+  deleteOption.className = "taskOption";
+  deleteOption.textContent = "Delete";
+  deleteOption.style.color = "red";
+
+  taskOptions.appendChild(editOption);
+  taskOptions.appendChild(deleteOption);
+
 
   const taskPriorityValue = taskPrioritySelector.value;
 
@@ -271,6 +312,9 @@ addTaskBtn.addEventListener("click", () => {
     const mainTask = document.createElement("label");
     mainTask.className = "mainTask";
     mainTask.draggable = isDraggable;
+
+    const taskContents = document.createElement("div");
+    taskContents.className = "taskContents";
 
     const taskTextAndCheckbox = document.createElement("div");
     taskTextAndCheckbox.className = "taskTextAndCheckbox";
@@ -315,16 +359,22 @@ addTaskBtn.addEventListener("click", () => {
       }
     });
     taskTextAndCheckbox.appendChild(taskTextSpan);
-    mainTask.appendChild(taskTextAndCheckbox);
+    taskContents.appendChild(taskTextAndCheckbox);
     taskAttributes.appendChild(taskPrioritySpan);
     taskDateAndTime.appendChild(taskDateImg);
     taskDateAndTime.appendChild(taskDateAndTimeSpan);
     if(taskDate || taskTime) {
-      taskAttributes.appendChild(taskDateAndTime);
+      
     }
     taskAttributes.appendChild(taskStatusSpan);
-    mainTask.appendChild(taskAttributes);
-    mainTask.appendChild(taskOptionsBtn);
+    taskContents.appendChild(taskAttributes);
+    mainTask.appendChild(taskContents);
+    taskOptionsBtnDiv.appendChild(taskOptionsBtn);
+    taskOptionsBtn.addEventListener("click", () => {
+      taskOptions.style.display = taskOptions.style.display === "none" ? "inline" : "none";
+    });
+    taskOptionsBtnDiv.appendChild(taskOptions);
+    mainTask.appendChild(taskOptionsBtnDiv);
     listItem.appendChild(mainTask);
     if (taskDate) {
       const startDateTime = taskTime ? `${taskDate}T${taskTime}` : taskDate;
@@ -353,6 +403,7 @@ addTaskBtn.addEventListener("click", () => {
       checkbox.dispatchEvent(new Event("change"));
     })
     taskList.appendChild(listItem);
+    localStorage.setItem("tasks", taskList.innerHTML);
     updateTasksDoneCount();
     taskInput.value = "";
     taskDateInput.value = "";
@@ -361,6 +412,11 @@ addTaskBtn.addEventListener("click", () => {
   }
   taskCreationDiv.style.display = "none";
 });
+
+/* taskList.innerHTML = "";
+localStorage.setItem("tasks", "");
+noTasksYetAlert.style.display = "inline";
+updateTasksDoneCount(); */
 
 function showNoTasksYet() {
   if (taskList.childElementCount === 0) {
@@ -507,24 +563,3 @@ pauseTimerBtn.addEventListener("click", pauseTimer);
 restartTimerBtn.addEventListener("click", restartTimer);
 
 updateTimerDisplay();
-
-function getTaskData() {
-  const tasks = [];
-  document.querySelectorAll(".listItem").forEach(item => {
-    const checkbox = item.querySelector(".checkbox");
-    const text = item.querySelector(".taskTextSpan").textContent;
-    const priority = item.querySelector(".taskPrioritySpan").textContent;
-    const dueDate = item.dataset.dueDate;
-    const dueTime = item.dataset.dueTime;
-    const status = item.querySelector(".taskStatusSpan").textContent;
-
-    tasks.push({ text, priority, dueDate, dueTime, status, completed: checkbox.checked });
-  });
-  return tasks;
-}
-
-async function handleAssistant(mode) {
-  const taskData = JSON.stringify(getTaskData());
-  const insight = await generateDewpointInsight(mode, taskData);
-  alert(insight);
-}

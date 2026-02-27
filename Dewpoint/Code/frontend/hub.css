@@ -1,8 +1,8 @@
 :root {
     --bg-color: oklch(97.594% 0.00298 264.795);
-    --bd-color: 1px solid rgb(221, 221, 221);
+    --bd-color: rgb(221, 221, 221);
     --text-color: black;
-    --navigation-bg-color: oklch(93.1% 0.00011 271.152);
+    --sidebar-bg-color: oklch(93.1% 0.00011 271.152);
     --btn-bg-color: oklch(85.69% 0.07011 243.537);
     --btn-hover-bg-color: oklch(75.306% 0.06089 243.311);
     --mini-analytic-bg-color: oklch(93.1% 0.00011 271.152);
@@ -37,9 +37,9 @@
 
 [data-theme="dark"] {
     --bg-color: oklch(11.779% 0.05035 260.832);
-    --bd-color: 1px solid rgb(54, 54, 54);
+    --bd-color: rgb(54, 54, 54);
     --text-color: white;
-    --navigation-bg-color: oklch(20% 0.05 260);
+    --sidebar-bg-color: oklch(20% 0.05 260);
     --btn-bg-color: oklch(74.813% 0.14896 230.353);
     --btn-hover-bg-color: oklch(65.194% 0.12939 230.07);
     --mini-analytic-bg-color: oklch(20% 0.05 260);
@@ -168,16 +168,16 @@ button:hover {
     }
 }
 
-.navigation {
+.sidebar {
     padding: 15px;
     border: none;
     height: 1000px;
-    background-color: var(--navigation-bg-color);
+    background-color: var(--sidebar-bg-color);
     margin-top: 44px;
     border-radius: 40px;
 }
 
-.navigation button {
+.sidebar button {
     display: flex;
     text-align: center;
     padding: 10px;
@@ -187,16 +187,16 @@ button:hover {
     position: relative;
 }
 
-.navigation button:hover {
+.sidebar button:hover {
     background-color: var(--btn-hover-bg-color);
     cursor: pointer;
 }
 
-.navigation img {
+.sidebar img {
     width: 18px;
 }
 
-.homeBtn {
+.dashboardBtn {
     top: 10px;
 }
 
@@ -224,7 +224,7 @@ button:hover {
     left: 30px;
     padding: 20px;
     height: fit-content;
-    border: var(--bd-color);
+    border: 1px solid var(--bd-color);
     border-radius: 20px;
 }
 
@@ -336,6 +336,12 @@ button:hover {
     margin: 20px;
 }
 
+.workAreaSplit {
+    position: relative;
+    width: 1175px;
+    border: 1px solid var(--bd-color);
+}
+
 .mainWorkArea {
     display: flex;
     flex-direction: column;
@@ -353,7 +359,6 @@ button:hover {
 
 .toDoList {
     position: relative;
-    top: 30px;
     left: 30px;
     padding: 20px;
     width: 700px;
@@ -362,9 +367,10 @@ button:hover {
     border-radius: 20px;
     display: flex;
     flex-direction: column;
-    margin-top: 44px;
+    margin-top: 10px;
     z-index: 1;
-    border: var(--bd-color);
+    border: 1px solid var(--bd-color);
+    margin-bottom: 0px;
 }
 
 .toDoListName {
@@ -731,7 +737,7 @@ input[type="checkbox"]:checked::before {
 
 .mainTask {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     position: relative;
     align-items: flex-start;
     gap: 10px;
@@ -818,13 +824,36 @@ input[type="checkbox"]:checked::before {
     width: 18px;
 }
 
+.taskOptions {
+    display: none;
+    position: absolute;
+    top: 40px;
+    border-radius: 10px;
+    padding: 40px 50px;
+    flex-direction: column;
+    gap: 10px;
+    background-color: var(--bg-color);
+    border: var(--bd-color);
+}
+
+.editOption {
+    display: flex;
+    align-items: center;
+}
+
+.deleteOption {
+    display: flex;
+    align-items: center;
+    color: red;
+}
+
 .focusTimer {
     position: relative;
-    top: 30px;
+    top: 9.5px;
     left: 30px;
     padding: 20px;
     width: 400px;
-    height: 300px;
+    height: 307.5px;
     border: var(--bd-color);
     border-radius: 20px;
     display: flex;
@@ -980,15 +1009,15 @@ input[type="checkbox"]:checked::before {
     top: 5px;
     left: 30px;
     padding: 20px;
-    width: 700px;
+    width: 1000px;
     height: 500px;
     border-radius: 20px;
-    margin-top: 44px;
-    border: var(--bd-color);
+    margin-top: 10px;
+    border: 1px solid var(--bd-color);
 }
 
 #calendar {
-    width: 700px;
+    width: 1000px;
     height: 394px;
 }
 
