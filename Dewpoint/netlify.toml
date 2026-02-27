@@ -1,13 +1,18 @@
 [build]
+  # Tell 
 Netlify
- to enter the frontend folder first
+
+ where the frontend folder is
   base = "Code/frontend"
 
+  # Since it's plain HTML, we don't need a build command
   command = ""
 
+  # Since there's no "dist" folder, look directly in Code/frontend/
   publish = "."
 
 [[redirects]]
+  # This ensures your site doesn't 404 on refresh
   from = "/*"
   to = "/index.html"
   status = 200
