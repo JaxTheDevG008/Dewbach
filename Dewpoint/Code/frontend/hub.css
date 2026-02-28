@@ -16,6 +16,7 @@
     --add-btn-hover-bg-color: oklch(75.306% 0.06089 243.311);
     --theme-btn-bg-color: oklch(21.808% 0.06129 260.262);
     --theme-btn-hover-bg-color: oklch(21.808% 0.06129 260.262);
+    --task-creation-div-bg-color: oklch(96.416% 0.00011 271.152);
     --add-task-btn-text-color: white;
     --add-task-btn-bg-color: oklch(85.69% 0.07011 243.537);
     --add-task-btn-hover-bg-color: oklch(75.306% 0.06089 243.311);
@@ -32,6 +33,8 @@
     --focus-timer-bg-color: linear-gradient(45deg, oklch(85.69% 0.07011 243.537), oklch(74.813% 0.14896 230.353), oklch(60.894% 0.18508 255.388));
     --fc-buttons-bg-color: oklch(100% 0.00011 271.152 / 0.3);
     --fc-buttons-icon-color: black;
+    --fc-daygrid-day-bg-color: oklch(95.213% 0.00011 271.152);
+    --fc-daygrid-day-hover-bg-color: oklch(93.1% 0.00011 271.152);
     --fc-border-color: oklch(100% 0.00011 271.152);
 }
 
@@ -53,6 +56,7 @@
     --add-btn-hover-bg-color: oklch(65.194% 0.12939 230.07);
     --theme-btn-bg-color: oklch(93.1% 0.00011 271.152);
     --theme-btn-hover-bg-color: oklch(77.311% 0.00009 271.152);
+    --task-creation-div-bg-color: oklch(17.24% 0.0326 258.33);
     --add-task-btn-text-color: oklch(58.962% 0.20549 268.631);
     --add-task-btn-bg-color: oklch(74.813% 0.14896 230.353);
     --add-task-btn-hover-bg-color: oklch(65.194% 0.12939 230.07);
@@ -69,6 +73,8 @@
     --focus-timer-bg-color: linear-gradient(45deg, oklch(71.579% 0.14246 230.537), oklch(54.021% 0.10882 230.936), oklch(26.741% 0.04452 281.116));
     --fc-buttons-bg-color: oklch(11.779% 0.05035 260.832);
     --fc-buttons-icon-color: white;
+    --fc-daygrid-day-bg-color: oklch(19.936% 0.02661 273.787);
+    --fc-daygrid-day-hover-bg-color: oklch(26.741% 0.04452 281.116);
     --fc-border-color: oklch(11.779% 0.05035 260.832);
 }
 
@@ -208,6 +214,9 @@ button:hover {
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 100px;
 }
 
 .header {
@@ -268,6 +277,11 @@ button:hover {
     color: var(--text-color);
     margin: 0;
     margin-bottom: 17px;
+}
+
+.commandCenterBtns {
+    display: flex;
+    gap: 10px;
 }
 
 .AIAssistantBtn {
@@ -336,15 +350,18 @@ button:hover {
     margin: 20px;
 }
 
-.workAreaSplit {
-    position: relative;
-    width: 1175px;
-    border: 1px solid var(--bd-color);
-}
-
 .mainWorkArea {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.workAreaSplit {
+    position: relative;
+    width: 1150px;
+    border: 1px solid var(--bd-color);
+    margin-bottom: 20px;
 }
 
 .section1 {
@@ -362,7 +379,7 @@ button:hover {
     left: 30px;
     padding: 20px;
     width: 700px;
-    height: fit-content;
+    height: 305px;
     border: none;
     border-radius: 20px;
     display: flex;
@@ -371,6 +388,18 @@ button:hover {
     z-index: 1;
     border: 1px solid var(--bd-color);
     margin-bottom: 0px;
+}
+
+.toDoListHeader {
+    align-items: center;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    height: 75px;
+    background-color: var(--bg-color);
+    align-self: flex-start;
 }
 
 .toDoListName {
@@ -463,6 +492,10 @@ button:hover {
     cursor: pointer;
 }
 
+.mainToDoListContent {
+    overflow-y: auto;
+}
+
 .themeBtn {
     position: relative;
     background-color: var(--theme-btn-bg-color);
@@ -473,11 +506,19 @@ button:hover {
     padding: 5px 10px;
     border-radius: 20px;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .themeBtn:hover {
     background-color: var(--theme-btn-hover-bg-color);
     cursor: pointer;
+}
+
+.themeIcon {
+    width: 18px;
+    height: 18px;
 }
 
 .sunIcon {
@@ -512,23 +553,29 @@ input:focus {
 }
 
 .taskCreationDiv {
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
     position: relative;
-    bottom: 60px;
     margin: 0px;
     margin-bottom: 15px;
     order: 0;
     width: 100%;
     gap: 10px;
+    border-radius: 20px;
+    padding: 15px;
+    padding-right: 0px;
+    width: 500px;
+    background-color: var(--task-creation-div-bg-color);
 }
 
 .actualTaskCreation {
     display: flex;
     flex-direction: row;
     width: 700px;
+    z-index: 10;
+    position: relative;
 }
 
 .taskInput {
@@ -646,7 +693,7 @@ input:focus {
 .noTasksYet {
     position: relative;
     left: 190px;
-    bottom: 50px;
+    top: 15px;
     font-family: Arial, sans-serif;
     color: oklch(77.628% 0.00009 271.152);
 }
@@ -654,12 +701,11 @@ input:focus {
 .tinyTip {
     font-size: 12px;
     position: relative;
-    bottom: 65px;
     left: 195px;
     color: oklch(77.628% 0.00009 271.152);
 }
 
-ul {
+ul, .taskList {
     position: relative;
     list-style-type: none;
     padding: 0;
@@ -834,6 +880,8 @@ input[type="checkbox"]:checked::before {
     gap: 10px;
     background-color: var(--bg-color);
     border: var(--bd-color);
+    width: fit-content;
+    height: fit-content;
 }
 
 .editOption {
@@ -849,7 +897,6 @@ input[type="checkbox"]:checked::before {
 
 .focusTimer {
     position: relative;
-    top: 9.5px;
     left: 30px;
     padding: 20px;
     width: 400px;
@@ -1004,21 +1051,72 @@ input[type="checkbox"]:checked::before {
     width: 18px;
 }
 
+.notes {
+    position: relative;
+    top: 15px;
+    left: 10px;
+    padding: 20px;
+    width: 400px;
+    height: 394px;
+    border: 1px solid var(--bd-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    align-items: center;
+    background: var(--bg-color);
+}
+
+.notesHeader {
+    align-items: center;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    padding-top: 20px;
+    background-color: var(--bg-color);
+    align-self: flex-start;
+    display: flex;
+}
+
+.notesName {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 20px;
+    color: var(--text-color);
+    font-size: 1.2rem;
+}
+
+.addBtn2 {
+    position: absolute;
+    background-color: var(--btn-bg-color);
+    color: #00558a;
+    font-weight: 600;
+    margin-top: 5px;
+    width: 55px;
+    height: 35px;
+    border: none;
+    border-radius: 20px;
+    top: 0;
+}
+
 .calendar {
     position: relative;
     top: 5px;
     left: 30px;
     padding: 20px;
-    width: 1000px;
-    height: 500px;
+    width: 700px;
+    height: 460px;
     border-radius: 20px;
     margin-top: 10px;
     border: 1px solid var(--bd-color);
 }
 
 #calendar {
-    width: 1000px;
-    height: 394px;
+    width: 700px;
+    height: 460px;
 }
 
 .fc .fc-toolbar {
@@ -1046,7 +1144,7 @@ input[type="checkbox"]:checked::before {
 }
 
 .fc .fc-prev-button, .fc .fc-next-button {
-    background-color: var(--fc-buttons-bg-color);
+    background-color: transparent;
     border: none;
     border-radius: 20px;
     color: var(--fc-buttons-icon-color);
@@ -1055,16 +1153,48 @@ input[type="checkbox"]:checked::before {
 }
 
 .fc .fc-prev-button:hover, .fc .fc-next-button:hover {
-    background-color: var(--fc-buttons-bg-color);
+    background-color: transparent;
     cursor: pointer;
     color: var(--fc-buttons-icon-color);
+}
+
+.fc .fc-col-header-cell {
+    padding: 5px 0;
+    font-weight: 500;
+    color: var(--text-color);
+    text-transform: capitalize;
+    border: none;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+    border-collapse: separate !important;
+    border-radius: 20px;
 }
 
 .fc {
   --fc-border-color: rgba(128, 128, 128, 0.4) !important;
 }
 
+.fc .fc-daygrid-day {
+    border: 3px solid var(--bg-color);
+    background-color: var(--fc-daygrid-day-bg-color);
+    border-radius: 15px;
+}
+
+.fc .fc-daygrid-day:hover {
+    background-color: var(--fc-daygrid-day-hover-bg-color);
+    cursor: pointer;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    border-radius: 15px;
+    outline: 3.1px solid #818CF8;
+    color: #818CF8;
+    background-color: var(--fc-daygrid-day-bg-color);
+}
+
 .fc .fc-daygrid-day-number {
     text-align: left; 
     flex-grow: 1; 
+    margin: 5px;
 }

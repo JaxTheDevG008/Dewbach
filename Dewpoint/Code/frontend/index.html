@@ -53,13 +53,13 @@
           <input class="searchBar">
         </div>
 
-        <button class="themeBtn">
-          🌙
-        </button>
+        <div class="commandCenterBtns">
+          <button class="themeBtn"></button>
 
-        <button class="AIAssistantBtn">
-          <img src="Images/AI Assistant Icon.png" class="AIAssistantIcon">
-        </button>
+          <button class="AIAssistantBtn">
+            <img src="Images/AI Assistant Icon.png" class="AIAssistantIcon">
+          </button>
+        </div>
       </div>
 
       <div class="miniAnalytics">
@@ -90,8 +90,8 @@
 
       <div class="section1">
         <!-- To-Do List -->
-        <section class="toDoList">
-          <div>
+       <section class="toDoList">
+          <div class="toDoListHeader">
             <h1 class="toDoListName">Tasks</h1>
             <div class="options">
               <button class="listAndKanbanToggle">
@@ -104,7 +104,14 @@
             </div>
 
             <hr class="toDoListLineSplit">
-            
+
+            <div class="noTasksYetAlert">
+              <h2 class="noTasksYet">No tasks yet!</h2>
+              <p class="tinyTip">Add a task to get started.</p>
+            </div>
+          </div>
+          
+          <div class="mainToDoListContent">
             <div class="taskCreationDiv">
               <div class="actualTaskCreation">
                 <input class="taskInput" type="text" placeholder="What needs to be done?">
@@ -130,29 +137,24 @@
 
               <div class="addAndCancelButtons">
                 <button class="cancelTaskCreationBtn">Cancel</button>
-                <button type="button" class="addTaskBtn"><img class="addTaskBtnIcon" src="../../Images/Add Task Icon.png" alt="Add Task Icon">Add Task</button>
+                <button type="button" class="addTaskBtn"><img class="addTaskBtnIcon" src="Images/Add Task Icon.png" alt="Add Task Icon">Add Task</button>
               </div>
             </div>
-          </div>
 
-          <div class="noTasksYetAlert">
-            <h2 class="noTasksYet">No tasks yet!</h2>
-            <p class="tinyTip">Add a task to get started.</p>
-          </div>
+            <ul class="taskList">
+              <!-- Tasks will dynamically show up here -->
+            </ul>
 
-          <ul class="taskList">
-            <!-- Tasks will dynamically show up here -->
-          </ul>
-
-          <div class="dropZones">
-            <div class="toDoDropZone">
-              To Do
-            </div>
-            <div class="inProgressDropZone">
-              In Progress
-            </div>
-            <div class="allDoneDropZone">
-              Completed
+            <div class="dropZones">
+              <div class="toDoDropZone">
+                To Do
+              </div>
+              <div class="inProgressDropZone">
+                In Progress
+              </div>
+              <div class="allDoneDropZone">
+                Completed
+              </div>
             </div>
           </div>
         </section>
@@ -195,6 +197,20 @@
       </div>
 
       <div class="section2">
+        <section class="notes">
+          <div class="notesHeader">
+            <h1 class="notesName">Notes</h1>
+            <div class="options">
+              <button class="addBtn2">
+                Add
+              </button>
+          </div>
+
+            <ul class="notesList">
+              <!-- Notes items will dynamically show up here -->
+            </ul>
+        </section>
+
         <section class="calendar">
           <div id="calendar"></div>
         </section>

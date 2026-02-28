@@ -1,7 +1,7 @@
 const askForNotifications = document.querySelector(".askForNotifications");
 const enableNotificationsBtn = document.querySelector(".enableNotificationsBtn",);
 const closeNotiPopup = document.querySelector(".closeNotiPopup");
-const navigation = document.querySelector(".navigation");
+const sidebar = document.querySelector(".sidebar");
 const currentDate = document.querySelector(".currentDate");
 const dynamicGreeting = document.querySelector(".greeting");
 const toDoList = document.querySelector(".toDoList");
@@ -69,10 +69,16 @@ function responsiveWebsite() {
 responsiveWebsite();
 
 window.addEventListener("load", () => {
+  taskCreationDiv.style.display = "none";
+
+  localStorage.getItem("focusTime") ? totalTime = parseInt(localStorage.getItem("focusTime")) : totalTime = 25 * 60;
+  updateTimerDisplay();
+  updateRing(totalTime);
+  updateFocusSessionsCount();
+
   const savedTasks = localStorage.getItem("tasks");
   if (savedTasks) {
     taskList.innerHTML = savedTasks;
-    // Reattach hover listeners for taskOptionsBtn
     document.querySelectorAll(".listItem").forEach((listItem) => {
       const mainTask = listItem.querySelector(".mainTask");
       const taskOptionsBtn = mainTask.querySelector(".taskOptionsBtn");
@@ -86,7 +92,18 @@ window.addEventListener("load", () => {
     updateTasksDoneCount();
     noTasksYetAlert.style.display = "none";
   }
-})
+
+  const savedAskForNotiDisplay = localStorage.getItem("askForNotiDisplay");
+  if (savedAskForNotiDisplay) {
+    askForNotifications.style.display = "none";
+    sidebar.style.marginTop = "0px";
+    toDoList.style.marginTop = "0px";
+  } else {
+    askForNotifications.style.display = "inline";
+    sidebar.style.marginTop = "44px";
+    toDoList.style.marginTop = "44px";
+  }
+}); 
 
 const now = new Date();
 const formattedCurrentDate = now.toLocaleDateString('en-US', { dateStyle: 'full' });
@@ -117,7 +134,7 @@ enableNotificationsBtn.addEventListener("click", () => {
 
 closeNotiPopup.addEventListener("click", () => {
   toDoList.style.marginTop = "0px";
-  navigation.style.marginTop = "0px";
+  sidebar.style.marginTop = "0px";
   askForNotifications.style.display = "none";
   localStorage.setItem("askForNotiDisplay", "none");
 
@@ -133,28 +150,25 @@ closeNotiPopup.addEventListener("click", () => {
   }, 4000);
 });
 
-window.addEventListener("load", () => {
-  const savedAskForNotiDisplay = localStorage.getItem("askForNotiDisplay");
-  if (savedAskForNotiDisplay) {
-    askForNotifications.style.display = "none";
-    navigation.style.marginTop = "0px";
-    toDoList.style.marginTop = "0px";
-  } else {
-    askForNotifications.style.display = "inline";
-    navigation.style.marginTop = "44px";
-    toDoList.style.marginTop = "44px";
-  }
-});
-
 themeBtn.addEventListener("click", () => {
   if (document.documentElement.getAttribute("data-theme") === "dark") {
     document.documentElement.removeAttribute("data-theme");
     localStorage.setItem("theme", "light");
+    themeBtn.innerHTML = `<img src="Images/Dark Mode Icon.png" alt="Dark Mode Icon" class="themeIcon">`;
   } else {
     document.documentElement.setAttribute("data-theme", "dark");
     localStorage.setItem("theme", "dark");
+    themeBtn.innerHTML = `<img src="Images/Light Mode Icon.png" alt="Light Mode Icon" class="themeIcon">`;
   }
 });
+
+window.addEventListener("load", () => {
+  if (document.documentElement.getAttribute("data-theme") === "dark") {
+    themeBtn.innerHTML = `<img src="Images/Light Mode Icon.png" alt="Light Mode Icon" class="themeIcon">`;
+  } else {
+    themeBtn.innerHTML = `<img src="Images/Dark Mode Icon.png" alt="Dark Mode Icon" class="themeIcon">`;
+  }
+})
 
 const newTheme = localStorage.getItem("theme");
 if (newTheme === "dark") {
@@ -228,10 +242,12 @@ listAndKanbanToggle.addEventListener("click", () => {
 
 addBtn.addEventListener("click", () => {
   taskCreationDiv.style.display = "flex";
+  noTasksYetAlert.style.display = taskList.innerHTML.trim() === "" ? "inline" : "none";
 });
 
 cancelTaskCreationBtn.addEventListener("click", () => {
   taskCreationDiv.style.display = "none";
+  noTasksYetAlert.style.display = taskList.innerHTML.trim() === "" ? "none" : "inline";
 })
 
 addTaskBtn.addEventListener("click", () => {
@@ -266,7 +282,7 @@ addTaskBtn.addEventListener("click", () => {
 
   const taskOptionsBtn = document.createElement("button");
   taskOptionsBtn.className = "taskOptionsBtn"
-  taskOptionsBtn.innerHTML = `<img class="taskOptionsBtnIcon" src="../../Images/Task Options Icon.png" alt="Task Options Icon">`
+  taskOptionsBtn.innerHTML = `<img class="taskOptionsBtnIcon" src="Images/Task Options Icon.png" alt="Task Options Icon">`
   taskOptionsBtn.style.display = "none";
 
   const taskOptions = document.createElement("div");
@@ -395,7 +411,7 @@ addTaskBtn.addEventListener("click", () => {
     mainTask.addEventListener("mouseleave", () => {
       taskOptionsBtn.style.display = "none";
     })
-    mainTask.addEventListener("click", () => {
+    mainTask.addEventListener("click", (e) => {
       updateTasksDoneCount();
       if (e.target === checkbox) return;
 
@@ -419,7 +435,7 @@ noTasksYetAlert.style.display = "inline";
 updateTasksDoneCount(); */
 
 function showNoTasksYet() {
-  if (taskList.childElementCount === 0) {
+  if (taskList.innerHTML.trim() === "") {
     noTasksYetAlert.style.display = "inline";
   } else {
     noTasksYetAlert.style.display = "none";
@@ -449,6 +465,12 @@ function updateTasksDoneCount() {
   if (totalTasksDisplay) {
     totalTasksDisplay.textContent = `of ${totalTasks} total`;
   }
+}
+
+function updateFocusSessionsCount() {
+  const focusSessionsDisplay = document.querySelector(".numberOfSessionsDone");
+  const focusSessions = parseInt(localStorage.getItem("focusSessions") || "0");
+  focusSessionsDisplay.textContent = focusSessions;
 }
 
 function checkTaskDue(listItem, taskText) {
@@ -531,11 +553,13 @@ function startTimer() {
     totalSeconds--;
     updateTimerDisplay();
     updateRing(totalSeconds);
+    localStorage.setItem("focusTime", totalTime);
 
     if (totalSeconds <= 0) {
       clearInterval(intervalId);
       isRunning = false;
       new Notification("Focus timer finished! Take a break.")
+      updateFocusSessionsCount();
       restartTimer();
     }
   }, 1000);
