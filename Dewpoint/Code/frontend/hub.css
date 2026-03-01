@@ -379,7 +379,7 @@ button:hover {
     left: 30px;
     padding: 20px;
     width: 700px;
-    height: 305px;
+    height: 328.5px;
     border: none;
     border-radius: 20px;
     display: flex;
@@ -900,13 +900,14 @@ input[type="checkbox"]:checked::before {
     left: 30px;
     padding: 20px;
     width: 400px;
-    height: 307.5px;
+    height: 330px;
     border: var(--bd-color);
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     margin-left: 20px;
     align-items: center;
+    justify-content: center;
     background: var(--focus-timer-bg-color);
 }
 
@@ -924,7 +925,7 @@ input[type="checkbox"]:checked::before {
     flex-direction: column;
     align-items: center;
     position: relative;
-    margin-top: 40px;
+    margin-top: 15px;
 }
 
 .timerProgressRing {
@@ -936,6 +937,32 @@ input[type="checkbox"]:checked::before {
     transition: stroke-dashoffset 1s linear;
     transform: rotate(-90deg);
     transform-origin: center;
+}
+
+.currentFoocusedTaskDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.taskSelectionDropdown {
+    width: 250px;
+    color: var(--text-color);
+    border: none;
+    padding: 1px 15px;
+    padding-right: 5px;
+    border-radius: 20px;
+    position: relative;
+    height: 36px;
+    margin-bottom: 17px;
+    background-color: var(--bg-color);
+    border: 2px solid var(--bd-color);
+}
+
+.currentFocusedTask {
+    display: inline;
+    color: red;
 }
 
 .timerMinutesDiv {
@@ -994,7 +1021,7 @@ input[type="checkbox"]:checked::before {
     height: 35px;
     text-align: center;
     background-color: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur();
+    backdrop-filter: blur(10px);
     color: oklch(44.316% 0.11415 246.272);
 }
 
@@ -1112,11 +1139,13 @@ input[type="checkbox"]:checked::before {
     border-radius: 20px;
     margin-top: 10px;
     border: 1px solid var(--bd-color);
+    overflow-y: hidden;
 }
 
 #calendar {
     width: 700px;
     height: 460px;
+    overflow-y: hidden; 
 }
 
 .fc .fc-toolbar {
@@ -1166,9 +1195,19 @@ input[type="checkbox"]:checked::before {
     border: none;
 }
 
-.fc-theme-standard .fc-scrollgrid {
-    border-collapse: separate !important;
-    border-radius: 20px;
+.fc .fc-scrollgrid {
+    border: 1px solid var(--fc-border-color);
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+}
+
+.fc .fc-scrollgrid td:last-child {
+    border-right: none;
+}
+
+.fc .fc-scrollgrid-section:last-child td {
+    border-bottom: none;
 }
 
 .fc {

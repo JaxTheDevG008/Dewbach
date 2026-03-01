@@ -33,6 +33,8 @@ const toDoDropZone = document.querySelector(".toDoDropZone");
 const inProgressDropZone = document.querySelector(".inProgressDropZone");
 const allDoneDropZone = document.querySelector(".allDoneDropZone");
 const focusTimer = document.querySelector(".focusTimer");
+const taskSelectionDropdown = document.querySelector(".taskSelectionDropdown");
+const currentFocusedTask = document.querySelector(".currentFocusedTask");
 const timerMinutesDiv = document.querySelector(".timerMinutesDiv");
 const timerProgressRing = document.querySelector(".timerProgressRing");
 const timerMinutes = document.querySelector(".timerMinutes");
@@ -71,10 +73,7 @@ responsiveWebsite();
 window.addEventListener("load", () => {
   taskCreationDiv.style.display = "none";
 
-  localStorage.getItem("focusTime") ? totalTime = parseInt(localStorage.getItem("focusTime")) : totalTime = 25 * 60;
-  updateTimerDisplay();
-  updateRing(totalTime);
-  updateFocusSessionsCount();
+  localStorage.getItem("taskSelectionOptions") ? taskSelectionDropdown.innerHTML = localStorage.getItem("taskSelectionOptions") : null;
 
   const savedTasks = localStorage.getItem("tasks");
   if (savedTasks) {
@@ -243,12 +242,16 @@ listAndKanbanToggle.addEventListener("click", () => {
 addBtn.addEventListener("click", () => {
   taskCreationDiv.style.display = "flex";
   noTasksYetAlert.style.display = taskList.innerHTML.trim() === "" ? "inline" : "none";
+  toDoList.style.height = "495px";
+  focusTimer.style.height = "496.5px";
 });
 
 cancelTaskCreationBtn.addEventListener("click", () => {
   taskCreationDiv.style.display = "none";
   noTasksYetAlert.style.display = taskList.innerHTML.trim() === "" ? "none" : "inline";
-})
+  toDoList.style.height = "328.5px";
+  focusTimer.style.height = "330px";
+});
 
 addTaskBtn.addEventListener("click", () => {
   noTasksYetAlert.style.display = "none";
@@ -421,12 +424,17 @@ addTaskBtn.addEventListener("click", () => {
     taskList.appendChild(listItem);
     localStorage.setItem("tasks", taskList.innerHTML);
     updateTasksDoneCount();
+    const focusedTaskOption = new Option(taskText, taskText);
+    taskSelectionDropdown.appendChild(focusedTaskOption);
+    localStorage.setItem("taskSelectionOptions", taskSelectionDropdown.innerHTML);
     taskInput.value = "";
     taskDateInput.value = "";
     taskTimeInput.value = "";
+    toDoList.style.height = "328.5px";
+    focusTimer.style.height = "330px";
+    taskCreationDiv.style.display = "none";
   } else {
   }
-  taskCreationDiv.style.display = "none";
 });
 
 /* taskList.innerHTML = "";
@@ -553,7 +561,9 @@ function startTimer() {
     totalSeconds--;
     updateTimerDisplay();
     updateRing(totalSeconds);
-    localStorage.setItem("focusTime", totalTime);
+    currentFocusedTask.style.display = "inline";
+    currentFocusedTask.textContent = focusedTaskOption;
+    taskSelectionDropdown.style.display = "none";
 
     if (totalSeconds <= 0) {
       clearInterval(intervalId);
