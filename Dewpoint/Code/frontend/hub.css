@@ -181,6 +181,8 @@ button:hover {
     background-color: var(--sidebar-bg-color);
     margin-top: 44px;
     border-radius: 40px;
+    position: fixed;
+    z-index: 9999;
 }
 
 .sidebar button {
@@ -235,6 +237,21 @@ button:hover {
     height: fit-content;
     border: 1px solid var(--bd-color);
     border-radius: 20px;
+}
+
+body.calendarView .commandCenter,
+body.calendarView .miniAnalytics,
+body.calendarView .workAreaSplit,
+body.calendarView .toDoList,
+body.calendarView .focusTimer,
+body.calendarView .notes {
+    display: none;
+}
+
+.actualCommands {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .searchDiv {
@@ -300,7 +317,63 @@ button:hover {
 }
 
 .AIAssistantIcon {
-    width: 16px;
+    width: 18px;
+}
+
+.decrastinatorBtn {
+    display: flex;
+    text-align: center;
+    padding: 10px;
+    background-color: var(--btn-bg-color);
+    border: none;
+    border-radius: 120px;
+    position: relative;
+}
+
+.decrastinatorBtn:hover {
+    background-color: var(--btn-hover-bg-color);
+    cursor: pointer;
+}
+
+.decrastinatorIcon {
+    width: 18px;
+}
+
+.decrastinatorOverlay {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background: oklch(0% 0 0 / 0.3);
+    z-index: 999999;
+}
+
+.decrastinatorDiv {
+    position: fixed;
+    z-index: 1000000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    width: 450px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.decrastinatorMinutesDiv {
+    position: relative;
+    z-index: 10;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: black;
+    z-index: 2;
+    margin: 0;
 }
 
 .miniAnalytics {
@@ -851,6 +924,10 @@ input[type="checkbox"]:checked::before {
     order: 3;
 }
 
+.taskOptionsBtnDiv {
+    display: flex;
+}
+
 .taskOptionsBtn {
     display: flex;
     text-align: center;
@@ -961,8 +1038,8 @@ input[type="checkbox"]:checked::before {
 }
 
 .currentFocusedTask {
-    display: inline;
-    color: red;
+    display: none;
+    color: white;
 }
 
 .timerMinutesDiv {
@@ -970,9 +1047,9 @@ input[type="checkbox"]:checked::before {
     width: 150px;
     height: 150px;
     display: flex;
-    margin-bottom: 15px;
     align-items: center;
     justify-content: center;
+    margin-bottom: 15px;
 }
 
 .timerMinutesDiv svg {
@@ -1148,6 +1225,17 @@ input[type="checkbox"]:checked::before {
     overflow-y: hidden; 
 }
 
+body.calendarView #calendar,
+body.calendarView .calendar {
+    width: 80vw;
+    height: 980px;
+    margin-top: 0px;
+    top: 0px;
+    left: 0px;
+    margin-right: 0px;
+    right: 0px;
+}
+
 .fc .fc-toolbar {
     display: flex !important;
     justify-content: flex-end;
@@ -1168,23 +1256,17 @@ input[type="checkbox"]:checked::before {
     margin-left: 0 !important;
 }
 
-.fc .fc-today-button {
-    display: none;
-}
-
-.fc .fc-prev-button, .fc .fc-next-button {
+.fc .fc-button {
     background-color: transparent;
     border: none;
     border-radius: 20px;
-    color: var(--fc-buttons-icon-color);
+    color: var(--text-color);
     padding: 5px 10px;
     backdrop-filter: blur();
 }
 
-.fc .fc-prev-button:hover, .fc .fc-next-button:hover {
-    background-color: transparent;
-    cursor: pointer;
-    color: var(--fc-buttons-icon-color);
+.fc .fc-today-button {
+    display: none;
 }
 
 .fc .fc-col-header-cell {

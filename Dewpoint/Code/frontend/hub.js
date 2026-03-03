@@ -2,8 +2,13 @@ const askForNotifications = document.querySelector(".askForNotifications");
 const enableNotificationsBtn = document.querySelector(".enableNotificationsBtn",);
 const closeNotiPopup = document.querySelector(".closeNotiPopup");
 const sidebar = document.querySelector(".sidebar");
+const calendarBtn = document.querySelector(".calendarBtn");
+const mainContent = document.querySelector(".mainContent");
+const commandCenter = document.querySelector(".commandCenter");
+const decrastinatorBtn = document.querySelector(".decrastinatorBtn");
 const currentDate = document.querySelector(".currentDate");
 const dynamicGreeting = document.querySelector(".greeting");
+const miniAnalytics = document.querySelector(".miniAnalytics");
 const toDoList = document.querySelector(".toDoList");
 const listAndKanbanToggle = document.querySelector(".listAndKanbanToggle");
 const addBtn = document.querySelector(".addBtn");
@@ -38,24 +43,31 @@ const currentFocusedTask = document.querySelector(".currentFocusedTask");
 const timerMinutesDiv = document.querySelector(".timerMinutesDiv");
 const timerProgressRing = document.querySelector(".timerProgressRing");
 const timerMinutes = document.querySelector(".timerMinutes");
+const timerButtons = document.querySelector(".timerButtons");
 const lengthButtons = document.querySelectorAll(".timerLengthOptions button");
 const startTimerBtn = document.querySelector(".startTimerBtn");
 const pauseTimerBtn = document.querySelector(".pauseTimerBtn");
 const restartTimerBtn = document.querySelector(".restartTimerBtn");
 const themeBtn = document.querySelector(".themeBtn");
+const notes = document.querySelector(".notes");
+const calendarSection = document.querySelector(".calendar");
 
 let calendar;
 
 document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
-  calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
-    headerToolbar: {
-      left: "",
-      center: "prev,title,next",
-      right: ""
-    }
-  });
+  if (calendarEl) {
+    calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: "",
+        center: "prev,title,next",
+        right: "dayGridMonth,dayGridWeek,dayGridDay"
+      }
+    });
+  } else {
+    console.error("Calendar error");
+  }
   calendar.render();
 });
 
@@ -65,9 +77,9 @@ function responsiveWebsite() {
   } else {
     console.log("Desktop");
   }
-  requestAnimationFrame(responsiveWebsite);
 }
 
+window.addEventListener("resize", responsiveWebsite);
 responsiveWebsite();
 
 window.addEventListener("load", () => {
@@ -103,6 +115,10 @@ window.addEventListener("load", () => {
     toDoList.style.marginTop = "44px";
   }
 }); 
+
+calendarBtn.addEventListener("click", () => {
+  document.body.classList.toggle("calendarView")
+})
 
 const now = new Date();
 const formattedCurrentDate = now.toLocaleDateString('en-US', { dateStyle: 'full' });
@@ -160,6 +176,51 @@ themeBtn.addEventListener("click", () => {
     themeBtn.innerHTML = `<img src="Images/Light Mode Icon.png" alt="Light Mode Icon" class="themeIcon">`;
   }
 });
+
+decrastinatorBtn.addEventListener("click", () => {
+  const isDecrastinatorView = document.documentElement.classList.toggle("decrastinatorView");
+
+  if (isDecrastinatorView) {
+    const decrastinatorOverlay = document.createElement("div");
+    decrastinatorOverlay.className = "decrastinatorOverlay";
+
+    const decrastinatorDiv = document.createElement("div");
+    decrastinatorDiv.className = "decrastinatorDiv";
+
+    const decrastinatorMinutesDiv = document.createElement("div");
+    decrastinatorMinutesDiv.className = "decrastinatorMinutesDiv";
+    decrastinatorMinutesDiv.style.color = "var(--text-color)";
+
+    let decrastinatorTotalTime = 3 * 60;
+    let decrastinatorTotalSeconds = decrastinatorTotalTime;
+    let decrastinatorIntervalId = null;
+    let decrastinatorIsRunning = false;
+
+    const decrastinatorInitMinutes = Math.floor(decrastinatorTotalSeconds / 60);
+    const decrastinatorInitSeconds = decrastinatorTotalSeconds % 60;
+    decrastinatorMinutesDiv.textContent = `${decrastinatorInitMinutes}:${decrastinatorInitSeconds.toString().padStart(2, '0')}`;
+
+    decrastinatorIntervalId = setInterval(() => {
+      decrastinatorTotalSeconds--;
+
+      const decrastinatorMinutes = Math.floor(decrastinatorTotalSeconds / 60);
+      const decrastinatorSeconds = decrastinatorTotalSeconds % 60;
+      decrastinatorMinutesDiv.textContent = `${decrastinatorMinutes}:${decrastinatorSeconds.toString().padStart(2, '0')}`;
+
+      if (decrastinatorTotalSeconds <= 0) {
+        clearInterval(decrastinatorIntervalId);
+      }
+    }, 1000)
+
+    decrastinatorDiv.append(decrastinatorMinutesDiv);
+    document.body.append(decrastinatorOverlay, decrastinatorDiv);
+    document.querySelectorAll("body > :not(.decrastinatorDiv):not(.decrastinatorOverlay)").forEach(el => el.inert = true);
+  } else {
+    document.querySelector(".decrastinatorOverlay")?.remove();
+    document.querySelector(".decrastinatorDiv")?.remove();
+    document.querySelectorAll("body >  *").forEach(el => el.inert = false);
+  }
+})
 
 window.addEventListener("load", () => {
   if (document.documentElement.getAttribute("data-theme") === "dark") {
@@ -291,7 +352,6 @@ addTaskBtn.addEventListener("click", () => {
   const taskOptions = document.createElement("div");
   taskOptions.className = "taskOptions";
   taskOptions.style.display = "none";
-  taskOptions.style.zIndex = "9999";
 
   const editOption = document.createElement("div");
   editOption.className = "taskOption";
@@ -304,7 +364,14 @@ addTaskBtn.addEventListener("click", () => {
 
   taskOptions.appendChild(editOption);
   taskOptions.appendChild(deleteOption);
-
+  deleteOption.addEventListener("click", () => {
+    listItem.removeChild(mainTask);
+    taskList.removeChild(listItem);
+    localStorage.setItem("tasks", taskList.innerHTML);
+    calendar.getEventById(listItem.dataset.eventId)?.remove();
+    updateTasksDoneCount();
+    showNoTasksYet();
+  })
 
   const taskPriorityValue = taskPrioritySelector.value;
 
@@ -357,7 +424,7 @@ addTaskBtn.addEventListener("click", () => {
 
     const taskDateImg = document.createElement("img");
     taskDateImg.className = "taskDateImg";
-    taskDateImg.src = "../Images/Date Icon.png";
+    taskDateImg.src = "Images/Date Icon.png";
     taskDateImg.alt = "Date Icon";
 
     taskDateAndTimeSpan.textContent =
@@ -390,14 +457,14 @@ addTaskBtn.addEventListener("click", () => {
     mainTask.appendChild(taskContents);
     taskOptionsBtnDiv.appendChild(taskOptionsBtn);
     taskOptionsBtn.addEventListener("click", () => {
-      taskOptions.style.display = taskOptions.style.display === "none" ? "inline" : "none";
+      taskOptions.style.display = taskOptions.style.display === "none" ? "block" : "none";
     });
     taskOptionsBtnDiv.appendChild(taskOptions);
     mainTask.appendChild(taskOptionsBtnDiv);
     listItem.appendChild(mainTask);
     if (taskDate) {
       const startDateTime = taskTime ? `${taskDate}T${taskTime}` : taskDate;
-      calendar.addEvent({
+      const event = calendar.addEvent({
         title: taskText,
         start: startDateTime,
         allDay: !taskTime,
@@ -412,7 +479,9 @@ addTaskBtn.addEventListener("click", () => {
       taskOptionsBtn.style.display = "inline";
     })
     mainTask.addEventListener("mouseleave", () => {
-      taskOptionsBtn.style.display = "none";
+      if (taskOptions.style.display === "none") {
+        taskOptionsBtn.style.display = "none";
+      }
     })
     mainTask.addEventListener("click", (e) => {
       updateTasksDoneCount();
@@ -424,7 +493,9 @@ addTaskBtn.addEventListener("click", () => {
     taskList.appendChild(listItem);
     localStorage.setItem("tasks", taskList.innerHTML);
     updateTasksDoneCount();
-    const focusedTaskOption = new Option(taskText, taskText);
+    const focusedTaskOption = document.createElement("option");
+    focusedTaskOption.value = taskText;
+    focusedTaskOption.textContent = taskText;
     taskSelectionDropdown.appendChild(focusedTaskOption);
     localStorage.setItem("taskSelectionOptions", taskSelectionDropdown.innerHTML);
     taskInput.value = "";
@@ -458,8 +529,6 @@ function updateTasksDoneCount() {
   const doneDisplay = document.querySelector(".numberOfTasksDone");
   if (doneDisplay) {
     doneDisplay.textContent = doneTasks;
-  } else {
-    doneDisplay.textContent = "0";
   }
 
   const tasksLeftDisplay = document.querySelector(".numberOfTasksLeft");
@@ -521,7 +590,7 @@ setInterval(() => {
     const text = span.dataset.taskText || span.textContent;
     checkTaskDue(listItem, text);
   });
-}, 1000);
+}, 60000);
 
 const circumference = 283;
 let totalTime = 25 * 60;
@@ -553,22 +622,39 @@ lengthButtons.forEach(button => {
 
 function startTimer() {
   if (isRunning) return;
+  const focusedTaskCheckbox = document.createElement("input");
+  focusedTaskCheckbox.type = "checkbox";
+  focusedTaskCheckbox.className = "focusedTaskCheckbox";
+  focusedTaskCheckbox.dataset.order = "1";
+
+  const selectedFocusedTask = taskSelectionDropdown.options[taskSelectionDropdown.selectedIndex].text;
+  currentFocusedTask.textContent = "Focusing on: " + selectedFocusedTask;
+  currentFocusedTask.style.display = "inline";
+  currentFocusedTask.dataset.order = "2";
+
+  const currentFocusedTaskDiv = document.querySelector(".currentFocusedTaskDiv");
+  currentFocusedTaskDiv.style.gap = "5px";
+  currentFocusedTaskDiv.style.display = "flex";
+  taskSelectionDropdown.style.display = "none";
+
+  timerButtons.style.marginTop = "15px";
+
   isRunning = true;
   startTimerBtn.style.display = "none";
   pauseTimerBtn.style.display = "inline";
+  currentFocusedTask.appendChild(focusedTaskCheckbox);
 
   intervalId = setInterval(() => {
     totalSeconds--;
     updateTimerDisplay();
     updateRing(totalSeconds);
-    currentFocusedTask.style.display = "inline";
-    currentFocusedTask.textContent = focusedTaskOption;
-    taskSelectionDropdown.style.display = "none";
 
     if (totalSeconds <= 0) {
       clearInterval(intervalId);
       isRunning = false;
-      new Notification("Focus timer finished! Take a break.")
+      if (Notification.permission === "granted") {
+        new Notification("Focus timer finished! Take a break.")
+      }
       updateFocusSessionsCount();
       restartTimer();
     }
@@ -590,6 +676,9 @@ function restartTimer() {
   updateRing(totalTime);
   startTimerBtn.style.display = "inline";
   pauseTimerBtn.style.display = "none";
+  currentFocusedTask.style.display = "none";
+  taskSelectionDropdown.style.display = "inline";
+  timerButtons.style.marginTop = "0px";
 }
 
 startTimerBtn.addEventListener("click", startTimer);
