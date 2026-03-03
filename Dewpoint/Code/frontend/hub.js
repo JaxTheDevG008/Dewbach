@@ -52,6 +52,8 @@ const themeBtn = document.querySelector(".themeBtn");
 const notes = document.querySelector(".notes");
 const calendarSection = document.querySelector(".calendar");
 
+let allTaskNames = JSON.parse(localStorage.getItem("allTaskNames")) || [];
+
 let calendar;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -86,6 +88,7 @@ window.addEventListener("load", () => {
   taskCreationDiv.style.display = "none";
 
   localStorage.getItem("taskSelectionOptions") ? taskSelectionDropdown.innerHTML = localStorage.getItem("taskSelectionOptions") : null;
+  localStorage.getItem("taskDecrastinatorSelectionOptions") ? decrastinatorTaskSelector.innerHTML = localStorage.getItem("taskDecrastinatorSelectionOptions") : null;
 
   const savedTasks = localStorage.getItem("tasks");
   if (savedTasks) {
@@ -187,9 +190,13 @@ decrastinatorBtn.addEventListener("click", () => {
     const decrastinatorDiv = document.createElement("div");
     decrastinatorDiv.className = "decrastinatorDiv";
 
+    const decrastinatorName = document.createElement("div");
+    decrastinatorName.className = "decrastinatorName";
+    decrastinatorName.textContent = "Decrastinator";
+    decrastinatorDiv.appendChild(decrastinatorName);
+
     const decrastinatorMinutesDiv = document.createElement("div");
     decrastinatorMinutesDiv.className = "decrastinatorMinutesDiv";
-    decrastinatorMinutesDiv.style.color = "var(--text-color)";
 
     let decrastinatorTotalTime = 3 * 60;
     let decrastinatorTotalSeconds = decrastinatorTotalTime;
@@ -200,7 +207,27 @@ decrastinatorBtn.addEventListener("click", () => {
     const decrastinatorInitSeconds = decrastinatorTotalSeconds % 60;
     decrastinatorMinutesDiv.textContent = `${decrastinatorInitMinutes}:${decrastinatorInitSeconds.toString().padStart(2, '0')}`;
 
-    decrastinatorIntervalId = setInterval(() => {
+    const decrastinatorTaskSelector = document.createElement("select");
+    decrastinatorTaskSelector.className = "decrastinatorTaskSelector";
+    decrastinatorDiv.appendChild(decrastinatorTaskSelector);
+
+    allTaskNames.forEach(name => {
+      const decrastinationTaskOption = document.createElement("option");
+      decrastinationTaskOption.value = name;
+      decrastinationTaskOption.textContent = name;
+      decrastinatorTaskSelector.appendChild(decrastinationTaskOption);
+    })
+
+    const startDecrastinatorBtn = document.createElement("div");
+    startDecrastinatorBtn.className = "startDecrastinatorBtn";
+    startDecrastinatorBtn.innerHTML = `<img src="Images/Start Timer Icon.png" class="startDecrastinatorIcon w-4">`;
+
+    decrastinatorDiv.appendChild(startDecrastinatorBtn);
+    startDecrastinatorBtn.addEventListener("click", () => {
+      if (decrastinatorIsRunning) return;
+      decrastinatorIsRunning = true;
+
+      decrastinatorIntervalId = setInterval(() => {
       decrastinatorTotalSeconds--;
 
       const decrastinatorMinutes = Math.floor(decrastinatorTotalSeconds / 60);
@@ -211,6 +238,7 @@ decrastinatorBtn.addEventListener("click", () => {
         clearInterval(decrastinatorIntervalId);
       }
     }, 1000)
+    })
 
     decrastinatorDiv.append(decrastinatorMinutesDiv);
     document.body.append(decrastinatorOverlay, decrastinatorDiv);
@@ -219,6 +247,7 @@ decrastinatorBtn.addEventListener("click", () => {
     document.querySelector(".decrastinatorOverlay")?.remove();
     document.querySelector(".decrastinatorDiv")?.remove();
     document.querySelectorAll("body >  *").forEach(el => el.inert = false);
+    clearInterval(decrastinatorIntervalId);
   }
 })
 
@@ -302,7 +331,7 @@ listAndKanbanToggle.addEventListener("click", () => {
 
 addBtn.addEventListener("click", () => {
   taskCreationDiv.style.display = "flex";
-  noTasksYetAlert.style.display = taskList.innerHTML.trim() === "" ? "inline" : "none";
+  noTasksYetAlert.style.display = taskList.innerHTML.trim() === "" ? "none" : "inline";
   toDoList.style.height = "495px";
   focusTimer.style.height = "496.5px";
 });
@@ -388,6 +417,9 @@ addTaskBtn.addEventListener("click", () => {
   }
 
   if (taskText !== "") {
+    allTaskNames.push(taskText);
+    localStorage.setItem("allTaskNames", JSON.stringify(allTaskNames));
+
     const listItem = document.createElement("li");
     listItem.className = "listItem";
     listItem.dataset.dateNotified = "false";
