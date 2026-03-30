@@ -170,16 +170,16 @@ window.addEventListener("load", () => {
   }
 
   const savedAskForNotiDisplay = localStorage.getItem("askForNotiDisplay");
-  if (savedAskForNotiDisplay) {
+  /* if (savedAskForNotiDisplay) {
     askForNotifications.style.display = "none";
     sidebar.style.marginTop = "0px";
     toDoList.style.marginTop = "0px";
   } else {
     askForNotifications.style.display = "inline";
-    sidebar.style.marginTop = "44px";
-    toDoList.style.marginTop = "44px";
-  }
-});
+    sidebar.style.marginTop = "0px";
+    toDoList.style.marginTop = "0px";
+  } */
+})
 
 /* dashboardBtn.addEventListener("click", () => {
   document.body.classList.add("dashboardActive");
@@ -896,7 +896,7 @@ addNoteBtn.addEventListener("click", () => {
   const noteOptionsDiv = document.createElement("div");
   noteOptionsDiv.className = "noteOptionsDiv";
 
-  
+
 
   mainNote.appendChild(noteOptionsDiv);
   notesList.appendChild(mainNote);
