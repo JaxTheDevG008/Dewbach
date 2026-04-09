@@ -387,6 +387,7 @@ body.calendarView .notes {
 .actualCommands {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 }
 
@@ -397,6 +398,7 @@ body.calendarView .notes {
 
 .searchBar {
   width: 340px;
+  height: 20px;
   border: 1px solid var(--input-bd-color);
   color: var(--text-color);
   padding-left: 40px;
@@ -434,7 +436,7 @@ body.calendarView .notes {
 }
 
 .searchDiv.scrolled .searchBarIcon {
-  top: 37px;
+  top: 39px;
   left: calc(50% - 278px);
   filter: brightness(0);
   opacity: 0.7;
@@ -567,7 +569,7 @@ body.calendarView .notes {
   gap: 10px;
 }
 
-.aiAssistantBtn {
+.agentBtn {
   display: flex;
   text-align: center;
   padding: 10px;
@@ -576,34 +578,38 @@ body.calendarView .notes {
   border-radius: 12px;
   position: relative;
   transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
 }
 
-.aiAssistantBtn:hover {
+.agentBtn:hover {
   background-color: oklch(94.155% 0.04169 219.505);
   cursor: pointer;
 }
 
-[data-theme="dark"] .aiAssistantBtn:hover {
+[data-theme="dark"] .agentBtn:hover {
   background-color: oklch(28.765% 0.05456 225.113);
   cursor: pointer;
 }
 
-.aiAssistantIcon {
-  width: 18px;
+.agentIcon {
+  width: 30px;
   filter: brightness(0);
   transition:
     filter 0.3s ease,
     opacity 0.3s ease;
 }
 
-.aiAssistantBtn:hover .aiAssistantIcon {
+.agentBtn:hover .agentIcon {
   filter: brightness(0) saturate(100%) invert(58%) sepia(85%) saturate(3033%)
     hue-rotate(166deg) brightness(101%) contrast(105%);
   opacity: 0.7;
   transition: 0.2s ease;
 }
 
-[data-theme="dark"] .aiAssistantIcon {
+[data-theme="dark"] .agentIcon {
   filter: brightness(0) invert(1);
   opacity: 0.7;
   transition: 0.2s ease;
@@ -696,6 +702,10 @@ body.calendarView .notes {
   border: 1px solid var(--bd-color);
   border-radius: 12px;
   position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
 }
 
 .decrastinatorBtn:hover {
@@ -704,7 +714,7 @@ body.calendarView .notes {
 }
 
 .decrastinatorIcon {
-  width: 18px;
+  width: 24px;
   filter: brightness(0);
 }
 
@@ -1085,8 +1095,8 @@ body.isKanbanView .toDoList {
   position: relative;
   background-color: var(--theme-btn-bg-color);
   color: white;
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   border: none;
   padding: 20px;
   border-radius: 12px;
@@ -1102,8 +1112,7 @@ body.isKanbanView .toDoList {
 }
 
 .themeIcon {
-  width: 18px;
-  height: 18px;
+  width: 20px;
   filter: brightness(0) invert(1);
   opacity: 0.7;
   transition: 0.2s ease;

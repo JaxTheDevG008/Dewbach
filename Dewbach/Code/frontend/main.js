@@ -12,7 +12,7 @@ const dashboardBtn = document.querySelector(".dashboardBtn");
 const calendarBtn = document.querySelector(".calendarBtn");
 const mainContent = document.querySelector(".mainContent");
 const commandCenter = document.querySelector(".commandCenter");
-const aiAssistantBtn = document.querySelector(".aiAssistantBtn");
+const agentBtn = document.querySelector(".agentBtn");
 const decrastinatorBtn = document.querySelector(".decrastinatorBtn");
 const currentDate = document.querySelector(".currentDate");
 const dynamicGreeting = document.querySelector(".greeting");
@@ -1015,7 +1015,7 @@ themeBtn.addEventListener("click", () => {
   }
 });
 
-aiAssistantBtn.addEventListener("click", () => {
+agentBtn.addEventListener("click", () => {
   const isaiView = document.documentElement.classList.toggle("aiView");
 
   if (isaiView) {
