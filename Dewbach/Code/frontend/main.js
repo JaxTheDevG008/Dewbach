@@ -355,6 +355,7 @@ function createTaskElement(task) {
     showNoTasksYet();
     refreshTaskDropdown();
     refreshCharts();
+    renderCalendarEvents();
     addActivity(`Deleted task: ${task.title}`, "delete");
     taskOptions.remove();
     listTask.remove();
@@ -431,7 +432,7 @@ function getSortedTasks(mode) {
         return copy.sort((a, b) => {
           if (!a.dueDate) return 1;
           if (!b.dueDate) return -1;
-          return new Date(b.dueDate) - new Date(a.dueDate);
+          return new Date(a.dueDate) - new Date(b.dueDate);
         });
       }
 
@@ -904,6 +905,7 @@ responsiveWebsite();
 document.addEventListener("DOMContentLoaded", () => {
   taskCreationDiv.style.display = "none";
 
+  taskList.innerHTML = "";
   currentTaskSort = taskSortSelector.value || "dateCreated";
   renderTasks(currentTaskSort);
 
@@ -1004,9 +1006,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Calendar error");
   }
 
-  tasks.forEach(task => {
-    createTaskElement(task);
-  });
   renderCalendarEvents();
 });
 
@@ -1331,6 +1330,9 @@ taskViewSelector.addEventListener("click", () => {
     taskList.innerHTML = "";
     tasks.forEach((task) => createTaskElement(task));
     showNoTasksYet();
+
+    currentTaskSort = taskSortSelector.value || "dateCreated";
+    renderTasks(currentTaskSort);
   }
 });
 
