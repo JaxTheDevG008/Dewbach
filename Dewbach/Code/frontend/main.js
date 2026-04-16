@@ -25,6 +25,7 @@ const section1 = document.querySelector(".section1");
 const section2 = document.querySelector(".section2");
 const toDoList = document.querySelector(".toDoList");
 const toDoListHeader = document.querySelector(".toDoListHeader");
+const taskSortSelector = document.querySelector(".taskSortSelector");
 const taskViewSelector = document.querySelector(".taskViewSelector");
 const addBtn = document.querySelector(".addBtn");
 const taskCreationDiv = document.querySelector(".taskCreationDiv");
@@ -96,6 +97,7 @@ let weeklyTaskChart = null;
 let priorityCompletionChart = null;
 let productivityScoreChart = null;
 let timeOfDayChart = null;
+let currentTaskSort = "dueDate";
 
 function showOverlay() {
   overlay.style.display = "block";
@@ -300,9 +302,6 @@ function createTaskElement(task) {
 
   mainTask.appendChild(taskOptionsBtnDiv);
   listTask.appendChild(mainTask);
-
-  taskList.appendChild(listTask);
-
   updateTasksDoneCount();
 
   editOption.addEventListener("click", () => {
@@ -361,6 +360,7 @@ function createTaskElement(task) {
     listTask.remove();
     taskOptions.classList.remove("show");
   });
+  taskList.appendChild(listTask);
 }
 
 cancelTaskCreationBtn.addEventListener("click", () => {
@@ -415,6 +415,43 @@ function addTaskToCalendar(task) {
   });
 }
 
+function getSortedTasks(mode) {
+  const copy = [...tasks];
+
+  switch (mode) {
+      case "dateCreated":
+        return copy.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+    
+      case "priority": {
+        const weight = { High: 3, Medium: 2, Low: 1, None: 0 };
+        return copy.sort((a, b) => (weight[b.priority] ?? 0) - (weight[a.priority] ?? 0));
+      }
+
+      case "dueDate": {
+        return copy.sort((a, b) => {
+          if (!a.dueDate) return 1;
+          if (!b.dueDate) return -1;
+          return new Date(b.dueDate) - new Date(a.dueDate);
+        });
+      }
+
+      default: return copy;
+  }
+}
+
+function renderTasks(mode = currentTaskSort) {
+  taskList.innerHTML = "";
+  const sorted = getSortedTasks(mode);
+  sorted.forEach(createTaskElement);
+  showNoTasksYet();
+  updateTasksDoneCount();
+}
+
+taskSortSelector.addEventListener("change", (e) => {
+  currentTaskSort = e.target.value;
+  renderTasks(currentTaskSort);
+})
+
 function createNoteElement(note) {
   noNotesYetAlert.style.display = "none";
 
@@ -465,12 +502,12 @@ function addTask() {
     dueTime: taskTimeInput.value || null,
     status: taskStatusSelector.value,
     completed: false,
+    createdAt: Date.now(),
   };
 
   tasks.push(task);
   saveTasks();
-
-  createTaskElement(task);
+  renderTasks(currentTaskSort);
   addTaskToCalendar(task);
   refreshTaskDropdown();
   updateTasksDoneCount();
@@ -866,6 +903,9 @@ responsiveWebsite();
 
 document.addEventListener("DOMContentLoaded", () => {
   taskCreationDiv.style.display = "none";
+
+  currentTaskSort = taskSortSelector.value || "dateCreated";
+  renderTasks(currentTaskSort);
 
   searchBar.value = "";
 
@@ -2073,10 +2113,10 @@ function renderTimeOfDayChart() {
     type: 'bar',
     data: {
       labels: [
-        '12a','1a','2a','3a','4a','5a',
-        '6a','7a','8a','9a','10a','11a',
-        '12p','1p','2p','3p','4p','5p',
-        '6p','7p','8p','9p','10p','11p'
+        '12am','1am','2am','3am','4am','5am',
+        '6m','7am','8am','9am','10am','11am',
+        '12pm','1pm','2pm','3pm','4pm','5pm',
+        '6pm','7pm','8pm','9mp','10pm','11pm'
       ],
       datasets: [{
         label: 'Tasks Completed per Hour',
