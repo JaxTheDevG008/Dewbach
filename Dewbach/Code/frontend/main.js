@@ -1626,10 +1626,6 @@ lengthButtons.forEach((button) => {
 
 function startTimer() {
   if (isRunning) return;
-  const focusedTaskCheckbox = document.createElement("input");
-  focusedTaskCheckbox.type = "checkbox";
-  focusedTaskCheckbox.className = "focusedTaskCheckbox";
-  focusedTaskCheckbox.dataset.order = "1";
 
   if (!taskSelectionDropdown.value) return;
   const selectedFocusedTask =
@@ -1649,11 +1645,13 @@ function startTimer() {
 
   isRunning = true;
   startTimerBtn.style.display = "none";
-  pauseTimerBtn.style.display = "inline";
-  currentFocusedTask.appendChild(focusedTaskCheckbox);
+  pauseTimerBtn.style.display = "flex";
+
+  const endTime = Date.now() + totalSeconds * 1000;
 
   intervalId = setInterval(() => {
-    totalSeconds--;
+    const remaining = Math.max(0, Math.round((endTime - Date.now()) / 1000));
+    totalSeconds = remaining;
     updateTimerDisplay();
     updateRing(totalSeconds);
 
@@ -1666,14 +1664,14 @@ function startTimer() {
       updateFocusSessionsCount();
       restartTimer();
     }
-  }, 1000);
+  }, 250);
   addActivity(`Started focus session: ${selectedFocusedTask}`, "focus");
 }
 
 function pauseTimer() {
   clearInterval(intervalId);
   isRunning = false;
-  startTimerBtn.style.display = "inline";
+  startTimerBtn.style.display = "flex";
   pauseTimerBtn.style.display = "none";
 }
 
@@ -1683,10 +1681,10 @@ function restartTimer() {
   totalSeconds = totalTime;
   updateTimerDisplay();
   updateRing(totalTime);
-  startTimerBtn.style.display = "inline";
+  startTimerBtn.style.display = "flex";
   pauseTimerBtn.style.display = "none";
   currentFocusedTask.style.display = "none";
-  taskSelectionDropdown.style.display = "inline";
+  taskSelectionDropdown.style.display = "flex";
   timerButtons.style.marginTop = "0px";
 }
 
